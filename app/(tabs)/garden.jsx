@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import GardenPlantList from "../../components/GardenPlantList";
 
 export default function Gardenpage() {
   return (
-    <View>
-      <View style={{ backgroundColor: "green", height: 100, width: "auto", margin: "auto" }}>
-        <Text>My Garden Page Placeholder</Text>
-      </View>
-    </View>
+    <SafeAreaView>
+       <GardenPlantList />
+    </SafeAreaView>
   );
 }
