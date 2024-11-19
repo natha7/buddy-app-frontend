@@ -1,8 +1,6 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import TabBar from "../../components/TabBar";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 export default function TabLayout() {
   return (
