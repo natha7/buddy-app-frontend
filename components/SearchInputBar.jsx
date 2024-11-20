@@ -14,15 +14,20 @@ export default function SearchInputBar(props) {
         width: 330,
         marginHorizontal: "auto",
         marginTop: 10,
-        paddingLeft: 10,
+
         color: "#839192",
         fontWeight: 600,
         borderRadius: 5,
         alignItems: "center",
       }}>
-      <FontAwesome5 name="search" size={22} color="#839192" />
+      <FontAwesome5
+        name="search"
+        size={22}
+        color="#839192"
+        style={{ position: "absolute", left: 10 }}
+      />
       <TextInput
-        style={{ marginLeft: 20 }}
+        style={{ height: "100%", width: "100%", paddingLeft: 40 }}
         placeholderTextColor="#5d6d7e"
         placeholder={placeholder_text}
       />
