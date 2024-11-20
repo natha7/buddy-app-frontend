@@ -1,11 +1,10 @@
-import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GardenPlantList from "../../components/GardenPlantList";
 
 export default function Gardenpage() {
   return (
     <SafeAreaView>
-       <GardenPlantList />
+      <GardenPlantList />
     </SafeAreaView>
   );
 }

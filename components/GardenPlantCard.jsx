@@ -16,7 +16,15 @@ export default function GardenPlantCard(props) {
         margin: "auto",
         marginTop: 30,
       }}>
-      <View style={{ borderRadius: 5, marginLeft: 8, backgroundColor: "#bfc9ca", height: 80, width: 80, alignSelf: "center" }}></View>
+      <View
+        style={{
+          borderRadius: 5,
+          marginLeft: 8,
+          backgroundColor: "#bfc9ca",
+          height: 80,
+          width: 80,
+          alignSelf: "center",
+        }}></View>
       <View style={{ display: "flex" }}>
         <Text style={{ fontSize: 12, marginTop: 10, alignSelf: "auto" }}>{commonName}</Text>
         <Text style={{ fontSize: 16, fontWeight: 500, marginRight: 8 }}>Nickname: {nickName}</Text>

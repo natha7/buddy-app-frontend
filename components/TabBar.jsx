@@ -2,16 +2,13 @@ import { View, StyleSheet } from "react-native";
 import { useLinkBuilder } from "@react-navigation/native";
 import { Text, PlatformPressable } from "@react-navigation/elements";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
 
 function TabBar({ state, descriptors, navigation }) {
   const { buildHref } = useLinkBuilder();
 
   const icons = {
     index: (props) => <Ionicons name="home" size={28} color={props.color} />,
-    calendar: (props) => (
-      <Ionicons size={28} name="calendar" color={props.color} />
-    ),
+    calendar: (props) => <Ionicons size={28} name="calendar" color={props.color} />,
     garden: (props) => <Ionicons size={28} name="leaf" color={props.color} />,
     finder: (props) => <Ionicons name="search" size={28} color={props.color} />,
   };
@@ -60,14 +57,11 @@ function TabBar({ state, descriptors, navigation }) {
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
-            onLongPress={onLongPress}
-          >
+            onLongPress={onLongPress}>
             {icons[route.name]({
               color: isFocused ? primaryColour : greyColour,
             })}
-            <Text style={{ color: isFocused ? primaryColour : greyColour }}>
-              {label}
-            </Text>
+            <Text style={{ color: isFocused ? primaryColour : greyColour }}>{label}</Text>
           </PlatformPressable>
         );
       })}
@@ -78,8 +72,8 @@ function TabBar({ state, descriptors, navigation }) {
 const styles = StyleSheet.create({
   bar: {
     flexDirection: "row",
-    position: "absolute",
-    bottom: 25,
+    position: "relative",
+    bottom: 0,
     justifyContent: "space-between",
     backgroundColor: "white",
     paddingVertical: 15,
