@@ -9,8 +9,8 @@ export default function GardenPlantCard(props) {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: "#a3e4d7",
-        borderRadius: 8,
+        backgroundColor: "#78A55A33",
+        borderRadius: 20,
         height: 100,
         width: 330,
         margin: "auto",
@@ -25,11 +25,13 @@ export default function GardenPlantCard(props) {
           width: 80,
           alignSelf: "center",
         }}></View>
-      <View style={{ display: "flex" }}>
-        <Text style={{ fontSize: 12, marginTop: 10, alignSelf: "auto" }}>{commonName}</Text>
-        <Text style={{ fontSize: 16, fontWeight: 500, marginRight: 8 }}>Nickname: {nickName}</Text>
+      <View style={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
+        <Text style={{ fontSize: 12, marginTop: 10, alignSelf: "auto", fontStyle: "italic" }}>
+          {commonName}
+        </Text>
+        <Text style={{ fontWeight: 500, marginRight: 10 }}>Nickname: {nickName}</Text>
         <View>
-          <Text style={{ fontSize: 16, fontWeight: 500, marginRight: 8 }}>
+          <Text style={{ fontWeight: 500, marginRight: 10, marginBottom: 10 }}>
             Thirstiness: {"💧".repeat(thirstiness)}
           </Text>
         </View>
