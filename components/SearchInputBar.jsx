@@ -10,25 +10,25 @@ export default function SearchInputBar(props) {
         display: "flex",
         flexDirection: "row",
         height: 40,
-        backgroundColor: "#d5dbdb",
+        backgroundColor: "rgba(120, 165, 90, 0.5)",
         width: 330,
         marginHorizontal: "auto",
         marginTop: 10,
 
-        color: "#839192",
+        color: "#314C1C",
         fontWeight: 600,
-        borderRadius: 5,
+        borderRadius: 20,
         alignItems: "center",
       }}>
       <FontAwesome5
         name="search"
         size={22}
-        color="#839192"
+        color="#314C1C"
         style={{ position: "absolute", left: 10 }}
       />
       <TextInput
         style={{ height: "100%", width: "100%", paddingLeft: 40 }}
-        placeholderTextColor="#5d6d7e"
+        placeholderTextColor="#314C1C"
         placeholder={placeholder_text}
       />
     </View>

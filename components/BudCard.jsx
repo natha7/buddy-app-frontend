@@ -14,8 +14,8 @@ export default function BudCard(props) {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: "#a3e4d7",
-        borderRadius: 8,
+        backgroundColor: "#78A55A33",
+        borderRadius: 20,
         height: 120,
         width: 330,
         margin: "auto",
@@ -42,15 +42,19 @@ export default function BudCard(props) {
       </View>
       <View style={{ marginVertical: "auto" }}>
         <View>
-          <Text>Common name: {common_name}</Text>
-          <Text style={{ fontSize: 10 }}>Latin name: {latin_name}</Text>
+          <Text style={{ marginBottom: 1 }}>
+            Common name: <Text style={{ fontWeight: 600 }}>{common_name}</Text>
+          </Text>
+          <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>
+            Latin name: {latin_name}
+          </Text>
         </View>
         <View
           style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            marginTop: 10,
+            marginTop: 12,
           }}>
           {getSunlightIcon(sunlight)}
           {getCycleIcon(cycle)}
