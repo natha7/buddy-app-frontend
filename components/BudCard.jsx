@@ -40,27 +40,42 @@ export default function BudCard(props) {
           }}
         />
       </View>
-      <View style={{ marginVertical: "auto" }}>
-        <View>
-          <Text style={{ marginBottom: 1 }}>
-            Common name: <Text style={{ fontWeight: 600 }}>{common_name}</Text>
-          </Text>
-          <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>
-            Latin name: {latin_name}
-          </Text>
-        </View>
+
+      <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
+        <Text style={{ marginBottom: 1 }}>
+          <Text style={{ fontWeight: 600 }}>{common_name}</Text>
+        </Text>
+        <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>{latin_name}</Text>
+
+        {/* Container for icons and labels */}
         <View
           style={{
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: "row", // Arrange icons in a horizontal row
+            justifyContent: "space-between", // Distribute the icons evenly across the row
             marginTop: 12,
+            alignItems: "center", // Align icons and text vertically in the center
           }}>
-          {getSunlightIcon(sunlight)}
-          {getCycleIcon(cycle)}
-          {getWaterFrequencyIcon(watering_frequency)}
+          {/* Sunlight icon and label */}
+          <View style={{ alignItems: "center", flex: 1 }}>
+            {getSunlightIcon(sunlight)} {/* Icon for sunlight */}
+            <Text style={{ fontSize: 10 }}>Sunlight</Text> {/* Text below the icon */}
+          </View>
+
+          {/* Cycle icon and label */}
+          <View style={{ alignItems: "center", flex: 1 }}>
+            {getCycleIcon(cycle)} {/* Icon for cycle */}
+            <Text style={{ fontSize: 10 }}>Cycle</Text> {/* Text below the icon */}
+          </View>
+
+          {/* Water frequency icon and label */}
+          <View style={{ alignItems: "center", flex: 1 }}>
+            {getWaterFrequencyIcon(watering_frequency)} {/* Icon for watering frequency */}
+            <Text style={{ fontSize: 10 }}>Watering</Text> {/* Text below the icon */}
+          </View>
         </View>
       </View>
+
       <AddBudBtn />
     </View>
   );
