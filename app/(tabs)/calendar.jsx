@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
+import { formatDate } from "../utils/dateFormatter";
 
 // Sample user_plants data
 const userPlants = [
@@ -9,7 +10,7 @@ const userPlants = [
     _id: "67406a8271fdd5484fabe135",
     garden_plant_id: 1,
     plant_id: 385,
-    last_watered: 1732277295224, // Example date in dd/mm/yy format
+    last_watered: 1732277295224,
     nickname: "Sammy",
     journal_entries: [],
   },
@@ -17,13 +18,11 @@ const userPlants = [
     _id: "67406a8271fdd5484fabe139",
     garden_plant_id: 2,
     plant_id: 125,
-    last_watered: "12/11/24",
+    last_watered: 1732277295224,
     nickname: "Johnny",
     journal_entries: [],
   },
 ];
-
-console.log(Date.now());
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
