@@ -47,35 +47,30 @@ export default function BudCard(props) {
         </Text>
         <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>{latin_name}</Text>
 
-        {/* Container for icons and labels */}
         <View
           style={{
             display: "flex",
-            flexDirection: "row", // Arrange icons in a horizontal row
-            justifyContent: "space-between", // Distribute the icons evenly across the row
+            flexDirection: "row",
+            justifyContent: "space-between",
             marginTop: 12,
-            alignItems: "center", // Align icons and text vertically in the center
+            alignItems: "center",
           }}>
-          {/* Sunlight icon and label */}
           <View style={{ alignItems: "center", flex: 1 }}>
-            {getSunlightIcon(sunlight)} {/* Icon for sunlight */}
-            <Text style={{ fontSize: 10 }}>Sunlight</Text> {/* Text below the icon */}
+            {getSunlightIcon(sunlight)}
+            <Text style={{ fontSize: 10 }}>Sunlight</Text>
           </View>
 
-          {/* Cycle icon and label */}
           <View style={{ alignItems: "center", flex: 1 }}>
-            {getCycleIcon(cycle)} {/* Icon for cycle */}
-            <Text style={{ fontSize: 10 }}>Cycle</Text> {/* Text below the icon */}
+            {getCycleIcon(cycle)}
+            <Text style={{ fontSize: 10 }}>Cycle</Text>
           </View>
 
-          {/* Water frequency icon and label */}
           <View style={{ alignItems: "center", flex: 1 }}>
-            {getWaterFrequencyIcon(watering_frequency)} {/* Icon for watering frequency */}
-            <Text style={{ fontSize: 10 }}>Watering</Text> {/* Text below the icon */}
+            {getWaterFrequencyIcon(watering_frequency)}
+            <Text style={{ fontSize: 10 }}>Watering</Text>
           </View>
         </View>
       </View>
-
       <AddBudBtn />
     </View>
   );
