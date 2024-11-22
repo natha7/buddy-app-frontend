@@ -40,25 +40,35 @@ export default function BudCard(props) {
           }}
         />
       </View>
-      <View style={{ marginVertical: "auto" }}>
-        <View>
-          <Text style={{ marginBottom: 1 }}>
-            Common name: <Text style={{ fontWeight: 600 }}>{common_name}</Text>
-          </Text>
-          <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>
-            Latin name: {latin_name}
-          </Text>
-        </View>
+
+      <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
+        <Text style={{ marginBottom: 1 }}>
+          <Text style={{ fontWeight: 600 }}>{common_name}</Text>
+        </Text>
+        <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>{latin_name}</Text>
+
         <View
           style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
             marginTop: 12,
+            alignItems: "center",
           }}>
-          {getSunlightIcon(sunlight)}
-          {getCycleIcon(cycle)}
-          {getWaterFrequencyIcon(watering_frequency)}
+          <View style={{ alignItems: "center", flex: 1 }}>
+            {getSunlightIcon(sunlight)}
+            <Text style={{ fontSize: 10 }}>Sunlight</Text>
+          </View>
+
+          <View style={{ alignItems: "center", flex: 1 }}>
+            {getCycleIcon(cycle)}
+            <Text style={{ fontSize: 10 }}>Cycle</Text>
+          </View>
+
+          <View style={{ alignItems: "center", flex: 1 }}>
+            {getWaterFrequencyIcon(watering_frequency)}
+            <Text style={{ fontSize: 10 }}>Watering</Text>
+          </View>
         </View>
       </View>
       <AddBudBtn />
