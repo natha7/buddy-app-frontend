@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 import { formatDate } from "../utils/dateFormatter";
+import { useCustomFonts } from "../../hooks/useCustomFonts";
 
 // Sample user_plants data
 const userPlants = [
@@ -41,9 +42,15 @@ const CalendarWithPlantWatering = () => {
     </View>
   );
 
+  const fontsLoaded = useCustomFonts();
+
+  if (!fontsLoaded) {
+    return <View></View>;
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Text style={styles.title}>Plant Watering Calendar</Text>
+      <Text style={styles.title}>Watering Calendar</Text>
       <Calendar
         markedDates={{
           ...markedDates,
@@ -87,14 +94,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Coustard_900Black",
+    fontSize: 26,
+    marginTop: 30,
+    color: "#78A55A",
+    marginLeft: 30,
     marginBottom: 20,
     textAlign: "center",
   },
   subtitle: {
+    fontFamily: "Coustard_400Regular",
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#78A55A",
+    letterSpacing: 0.3,
     marginVertical: 10,
     textAlign: "center",
   },

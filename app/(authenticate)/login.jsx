@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useCustomFonts } from "../../hooks/useCustomFonts";
 
 const login = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const login = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    if (email === "martha" && password === "123456") {
+    if (email === "martha" || (email === "Martha" && password === "123456")) {
       navigation.navigate("(tabs)");
       setFailMsg("");
     } else {
@@ -27,22 +28,38 @@ const login = () => {
     }
   };
 
+  const fontsLoaded = useCustomFonts();
+
+  if (!fontsLoaded) {
+    return <View></View>;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#275c42", alignItems: "center" }}>
-      <View style={{ marginTop: 100 }}>
+      <View style={{ marginTop: 100, marginBottom: 50 }}>
         <Text
-          style={{ fontSize: 55, fontFamily: "sans-serif", fontWeight: "600", color: "#e1aab0" }}>
+          style={{
+            fontSize: 55,
+            fontFamily: "Coustard_900Black",
+            color: "#e1aab0",
+            textAlign: "center",
+          }}>
           Buddy
         </Text>
       </View>
       <KeyboardAvoidingView>
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ color: "#fbeff5", fontSize: 16, fontWeight: "600", marginTop: 10 }}>
+        <View style={{ alignItems: "center", marginTop: 20 }}>
+          <Text
+            style={{
+              color: "#fbeff8",
+              fontSize: 16,
+              fontWeight: "400",
+            }}>
             Log in to your account
           </Text>
         </View>
 
-        <View style={{ marginTop: 30 }}>
+        <View>
           <View
             style={{
               flexDirection: "row",
@@ -51,7 +68,7 @@ const login = () => {
               backgroundColor: "#d0eedf",
               paddingVertical: 5,
               borderRadius: 5,
-              marginTop: 30,
+              marginTop: 10,
             }}>
             <MaterialIcons style={{ marginLeft: 8 }} name="email" size={24} color="gray" />
             <TextInput
