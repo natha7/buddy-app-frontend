@@ -1,7 +1,9 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, Image } from "react-native";
+import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 
 export default function GardenPlantCard(props) {
-  const { nickName, thirstiness, commonName } = props;
+  // const { nickName, thirstiness, commonName } = props;
+  const { userGarden, plantDetails } = props;
 
   return (
     <View
@@ -18,21 +20,21 @@ export default function GardenPlantCard(props) {
       }}>
       <View
         style={{
-          borderRadius: 5,
           marginLeft: 8,
-          backgroundColor: "#bfc9ca",
-          height: 80,
-          width: 80,
           alignSelf: "center",
-        }}></View>
+        }}>
+        <Image source={{ uri: plantDetails.default_image }} style={{ width: 80, height: 80, borderRadius: 5}} />
+      </View>
       <View style={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
         <Text style={{ fontSize: 12, marginTop: 10, alignSelf: "auto", fontStyle: "italic" }}>
-          {commonName}
+          {plantDetails.common_name}
         </Text>
-        <Text style={{ fontWeight: 500, marginRight: 10 }}>Nickname: {nickName}</Text>
+        <Text style={{ fontWeight: 500, marginRight: 10 }}>Nickname: {userGarden.nickname}</Text>
         <View>
           <Text style={{ fontWeight: 500, marginRight: 10, marginBottom: 10 }}>
-            Thirstiness: {"💧".repeat(thirstiness)}
+            {/* Thirstiness: {"💧".repeat(thirstiness)} */}
+           {getWaterFrequencyIcon(plantDetails.watering_frequency_in_days)}
+            {/* Last Watered 💧: {userGarden.last_watered} */}
           </Text>
         </View>
       </View>
