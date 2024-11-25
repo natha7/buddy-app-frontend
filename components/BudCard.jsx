@@ -37,6 +37,8 @@ export default function BudCard(props) {
             width: "100%",
             alignSelf: "center",
             borderRadius: 10,
+            borderColor: "#314C1C",
+            borderWidth: 1,
           }}
         />
       </View>

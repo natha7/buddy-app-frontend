@@ -55,7 +55,13 @@ export default function AddBudBtn(props) {
         <View style={styles.modalBox}>
           <Image
             src={plantInfo.img_url}
-            style={{ height: "45%", width: "45%", borderRadius: 20 }}
+            style={{
+              height: "35%",
+              width: "35%",
+              borderRadius: 10,
+              borderColor: "#314C1C",
+              borderWidth: 1,
+            }}
           />
           <Text
             style={
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#78A55A33",
     width: "30%",
     border: "2px",
-    borderColor: "black",
+    borderColor: "#314C1C",
     borderWidth: 1,
     borderRadius: 20,
     padding: 15,
@@ -113,6 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     fontFamily: "Coustard",
+    color: "#314C1C",
   },
   modalBtnContainer: {
     display: "flex",
@@ -124,5 +131,6 @@ const styles = StyleSheet.create({
     fontFamily: "Coustard",
     fontSize: 18,
     margin: "auto",
+    color: "#314C1C",
   },
 });
