@@ -13,8 +13,9 @@ function TabBar({ state, descriptors, navigation }) {
     finder: (props) => <Ionicons name="search" size={28} color={props.color} />,
   };
 
-  const primaryColour = "#02590F";
-  const greyColour = "#808080";
+  const primaryColour = "#314C1C";
+  const lightGreenColour = "#78A55A";
+  //const greyColour = "#808080";
 
   return (
     <View style={styles.bar}>
@@ -59,9 +60,9 @@ function TabBar({ state, descriptors, navigation }) {
             onPress={onPress}
             onLongPress={onLongPress}>
             {icons[route.name]({
-              color: isFocused ? primaryColour : greyColour,
+              color: isFocused ? primaryColour : lightGreenColour,
             })}
-            <Text style={{ color: isFocused ? primaryColour : greyColour }}>{label}</Text>
+            <Text style={{ color: isFocused ? primaryColour : lightGreenColour }}>{label}</Text>
           </PlatformPressable>
         );
       })}
