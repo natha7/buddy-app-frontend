@@ -3,7 +3,7 @@ import BudCard from "./BudCard.jsx";
 import SearchInputBar from "./SearchInputBar.jsx";
 import AddYourOwnBtn from "./AddYourOwnBtn.jsx";
 import { useCustomFonts } from "../hooks/useCustomFonts";
-import getAllPlants from "../app/utils/api.js";
+import { getAllPlants } from "../app/utils/api.js";
 import { useEffect, useState } from "react";
 
 export default function BudList() {
