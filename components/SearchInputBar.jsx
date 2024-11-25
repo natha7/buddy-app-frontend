@@ -1,8 +1,19 @@
 import { View, TextInput } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useState } from "react";
 
 export default function SearchInputBar(props) {
-  const { placeholder_text } = props;
+  const { placeholder_text, setCurrBudSearch } = props;
+  const [currInput, setCurrInput] = useState("");
+
+  function handleSearchEntry() {
+    setCurrBudSearch(() => {
+      return currInput;
+    });
+    setCurrInput(() => {
+      return "";
+    });
+  }
 
   return (
     <View
@@ -30,6 +41,9 @@ export default function SearchInputBar(props) {
         style={{ height: "100%", width: "100%", paddingLeft: 40 }}
         placeholderTextColor="#314C1C"
         placeholder={placeholder_text}
+        onChangeText={(text) => setCurrInput(text)}
+        onSubmitEditing={handleSearchEntry}
+        value={currInput}
       />
     </View>
   );

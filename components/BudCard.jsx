@@ -6,7 +6,7 @@ import { getCycleIcon } from "./utils/getCycleIcon";
 import AddBudBtn from "./AddBudBtn";
 
 export default function BudCard(props) {
-  const { img_url, common_name, latin_name, cycle, sunlight, watering_frequency } = props;
+  const { plantData } = props;
 
   return (
     <View
@@ -31,7 +31,7 @@ export default function BudCard(props) {
           backgroundColor: "grey",
         }}>
         <Image
-          src={img_url}
+          src={plantData.default_image}
           style={{
             height: "100%",
             width: "100%",
@@ -43,9 +43,11 @@ export default function BudCard(props) {
 
       <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
         <Text style={{ marginBottom: 1 }}>
-          <Text style={{ fontWeight: 600 }}>{common_name}</Text>
+          <Text style={{ fontWeight: 600 }}>{plantData.common_name}</Text>
         </Text>
-        <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>{latin_name}</Text>
+        <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>
+          {plantData.scientific_name[0]}
+        </Text>
 
         <View
           style={{
@@ -56,17 +58,17 @@ export default function BudCard(props) {
             alignItems: "center",
           }}>
           <View style={{ alignItems: "center", flex: 1 }}>
-            {getSunlightIcon(sunlight)}
+            {getSunlightIcon(plantData.sunlight[0])}
             <Text style={{ fontSize: 10 }}>Sunlight</Text>
           </View>
 
           <View style={{ alignItems: "center", flex: 1 }}>
-            {getCycleIcon(cycle)}
+            {getCycleIcon(plantData.cycle)}
             <Text style={{ fontSize: 10 }}>Cycle</Text>
           </View>
 
           <View style={{ alignItems: "center", flex: 1 }}>
-            {getWaterFrequencyIcon(watering_frequency)}
+            {getWaterFrequencyIcon(plantData.watering_frequency_in_days)}
             <Text style={{ fontSize: 10 }}>Watering</Text>
           </View>
         </View>
