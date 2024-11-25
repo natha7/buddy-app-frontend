@@ -2,6 +2,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { View, Text } from "react-native";
 
 export function getCycleIcon(plantCycle) {
+  if (plantCycle === "Herbaceous Perennial") plantCycle = "Perennial";
+
   const icons = {
     Perennial: <FontAwesome name="star" size={16} color="black" />,
     Biennial: <FontAwesome name="star-half-full" size={16} color="black" />,
