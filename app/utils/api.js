@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://buddy-app-backend.onrender.com/api",
@@ -16,6 +16,4 @@ const getUserGardenByUserId = (user_id) => {
     });
 };
 
-getUserGardenByUserId(1);
-
-module.exports = { getUserGardenByUserId };
+export default getUserGardenByUserId;

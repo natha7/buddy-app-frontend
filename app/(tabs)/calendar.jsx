@@ -1,42 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
-import { formatDate } from "../utils/dateFormatter";
+import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
-import { getUserGardenByUserId } from "../utils/api";
-
-// Sample user_plants data
-const userPlants = [
-  {
-    _id: "67406a8271fdd5484fabe135",
-    garden_plant_id: 1,
-    plant_id: 385,
-    last_watered: 1732277295224,
-    nickname: "Sammy",
-    journal_entries: [],
-  },
-  {
-    _id: "67406a8271fdd5484fabe139",
-    garden_plant_id: 2,
-    plant_id: 125,
-    last_watered: 1732277295224,
-    nickname: "Johnny",
-    journal_entries: [],
-  },
-];
-
-const userPlants2 = getUserGardenByUserId(1); // replace user_id = 1 by passing down user_id from log-in with useContext
+import getUserGardenByUserId from "../utils/api";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
+  const [userPlants, setUserPlants] = useState([]);
+  const [markedDates, setMarkedDates] = useState({});
 
-  // Create markedDates object based on userPlants
-  const markedDates = userPlants2.reduce((acc, plant) => {
-    const formattedDate = formatDate(plant.last_watered);
-    acc[formattedDate] = { marked: true, dotColor: "green" };
-    return acc;
-  }, {});
+  useEffect(() => {
+    const user_id = 1; // update dynamically based on who's logged-in
+
+    getUserGardenByUserId(user_id)
+      .then((fetchedPlants) => {
+        setUserPlants(fetchedPlants);
+        const dates = fetchedPlants.reduce((acc, plant) => {
+          const formattedDate = formatDate(plant.last_watered);
+          acc[formattedDate] = { marked: true, dotColor: "green" };
+          return acc;
+        }, {});
+
+        setMarkedDates(dates);
+        console.log(dates);
+      })
+      .catch((error) => {
+        console.error("Error fetching user plants:", error.message);
+      });
+  }, []);
 
   // Render the event details
   const renderEvent = ({ item }) => (
@@ -57,7 +50,7 @@ const CalendarWithPlantWatering = () => {
       <Calendar
         markedDates={{
           ...markedDates,
-          ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "orange" } }),
+          ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "green" } }),
         }}
         onDayPress={(day) => {
           console.log("Selected date:", day.dateString);
@@ -65,7 +58,7 @@ const CalendarWithPlantWatering = () => {
         }}
         theme={{
           todayTextColor: "green",
-          selectedDayBackgroundColor: "orange",
+          selectedDayBackgroundColor: "green",
           dotColor: "blue",
           arrowColor: "green",
         }}

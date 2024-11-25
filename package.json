@@ -2,6 +2,7 @@
   "name": "buddy-app-frontend",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -22,6 +23,8 @@
     "@react-navigation/native": "^7.0.0",
     "@react-navigation/stack": "^7.0.4",
     "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
     "expo": "~52.0.9",
     "expo-blur": "~14.0.1",
     "expo-constants": "~17.0.3",
