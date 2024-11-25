@@ -74,7 +74,11 @@ export default function BudCard(props) {
         </View>
       </View>
       <AddBudBtn
-        plantNameAndId={{ common_name: plantData.common_name, plant_id: plantData.plant_id }}
+        plantInfo={{
+          common_name: plantData.common_name,
+          plant_id: plantData.plant_id,
+          img_url: plantData.default_image,
+        }}
       />
     </View>
   );
