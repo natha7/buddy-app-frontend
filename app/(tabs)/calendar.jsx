@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 import { formatDate } from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
+import { getUserGardenByUserId } from "../utils/api";
 
 // Sample user_plants data
 const userPlants = [
@@ -25,11 +26,13 @@ const userPlants = [
   },
 ];
 
+const userPlants2 = getUserGardenByUserId(1); // replace user_id = 1 by passing down user_id from log-in with useContext
+
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
 
   // Create markedDates object based on userPlants
-  const markedDates = userPlants.reduce((acc, plant) => {
+  const markedDates = userPlants2.reduce((acc, plant) => {
     const formattedDate = formatDate(plant.last_watered);
     acc[formattedDate] = { marked: true, dotColor: "green" };
     return acc;
