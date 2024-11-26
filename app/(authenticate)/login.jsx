@@ -7,20 +7,35 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
+import { UserContext } from "@/contexts/UserContext.jsx";
 
 const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [failMsg, setFailMsg] = useState("");
   const navigation = useNavigation();
+  const { setUser } = useContext(UserContext);
 
   const handleLogin = () => {
-    if (email === "martha" || (email === "Martha" && password === "123456")) {
+    if (
+      email.toLowerCase() === "martha" ||
+      (email.toLowerCase() === "martha" && password === "123456")
+    ) {
+      setUser(() => {
+        return 1;
+      });
+      navigation.navigate("(tabs)");
+      setFailMsg("");
+    }
+    if (email.toLowerCase() === "alan" || (email.toLowerCase() === "alan" && password === "123")) {
+      setUser(() => {
+        return 2;
+      });
       navigation.navigate("(tabs)");
       setFailMsg("");
     } else {
