@@ -15,12 +15,18 @@ export default function AddBudBtn(props) {
     postBudToUserGarden(1, {
       common_name: plantInfo.common_name,
       plant_id: plantInfo.plant_id,
-    }).then(() => {
-      setIsPosting(() => {
-        return false;
+    })
+      .then(() => {
+        setIsPosting(() => {
+          return false;
+        });
+        hideModal();
+      })
+      .catch((err) => {
+        setIsPosting(() => {
+          return false;
+        });
       });
-      hideModal();
-    });
   }
 
   function hideModal() {

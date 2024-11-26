@@ -1,10 +1,11 @@
-import { ScrollView, Text, Pressable, View } from "react-native";
+import { ScrollView, Text, ActivityIndicator, View } from "react-native";
 import BudCard from "./BudCard.jsx";
 import SearchInputBar from "./SearchInputBar.jsx";
 import AddYourOwnBtn from "./AddYourOwnBtn.jsx";
 import { useCustomFonts } from "../hooks/useCustomFonts";
 import { getAllPlants } from "../app/utils/api.js";
 import { useEffect, useState } from "react";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 export default function BudList() {
   const fontsLoaded = useCustomFonts();
@@ -58,17 +59,35 @@ export default function BudList() {
         setCurrBudSearch={setCurrBudSearch}
       />
       <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
-        <View>
-          {isLoading ? (
-            <Text>Loading...</Text>
-          ) : errorStatus === 404 || plants.length === 0 ? (
-            <Text>No plants found</Text>
-          ) : (
-            plants.map((plant) => {
+        {isLoading ? (
+          <View
+            style={{
+              minHeight: "100%",
+              minWidth: "100%",
+            }}>
+            <View style={{ margin: "auto" }}>
+              <ActivityIndicator size="large" color="#78A55A" />
+              <Text>Loading plants...</Text>
+            </View>
+          </View>
+        ) : errorStatus === 404 || plants.length === 0 ? (
+          <View
+            style={{
+              minHeight: "100%",
+              minWidth: "100%",
+            }}>
+            <View style={{ margin: "auto", display: "flex", alignItems: "center" }}>
+              <FontAwesome6 name="plant-wilt" size={26} color="#314C1C" />
+              <Text>No plants found</Text>
+            </View>
+          </View>
+        ) : (
+          <View>
+            {plants.map((plant) => {
               return <BudCard key={plant._id} plantData={plant} />;
-            })
-          )}
-        </View>
+            })}
+          </View>
+        )}
       </ScrollView>
       <AddYourOwnBtn />
     </View>
