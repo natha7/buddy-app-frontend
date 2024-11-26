@@ -30,3 +30,14 @@ export function waterGardenPlant(user_id, garden_plant_id) {
     water_plant: true,
   });
 }
+
+export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
+  return instance
+    .get(`/user_gardens/${user_id}/plants/${garden_plant_id}`)
+    .then(({ data }) => {
+      return data.plant;
+    })
+    .catch((err) => {
+      return err;
+    });
+}
