@@ -38,7 +38,7 @@ export default function GardenPlantCard(props) {
           <Text style={{ fontWeight: 500, marginRight: 10, marginBottom: 10 }}>
             {getWaterFrequencyIcon(plantDetails.watering_frequency_in_days)}
             {thirstLevel(userGarden.last_watered, plantDetails.watering_frequency_in_days)}
-						<WaterGardenPlantBtn />
+            <WaterGardenPlantBtn plantDetails={plantDetails} />
           </Text>
         </View>
       </View>

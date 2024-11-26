@@ -14,8 +14,7 @@ export function getUserGardenByUserId(user_id) {
     .catch((error) => {
       throw error;
     });
-};
-
+}
 
 export function getAllPlants(searchTerm) {
   return instance.get(`/plants?search=${searchTerm}`).then(({ data }) => {
@@ -24,4 +23,10 @@ export function getAllPlants(searchTerm) {
 }
 export function postBudToUserGarden(user_id, plantToSend) {
   return instance.post(`user_garden/${user_id}/plants`, plantToSend);
+}
+
+export function waterGardenPlant(user_id, garden_plant_id) {
+  return instance.patch(`/user_garden/${user_id}/plants/${garden_plant_id}`, {
+    water_plant: true,
+  });
 }

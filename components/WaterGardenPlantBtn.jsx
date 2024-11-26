@@ -1,21 +1,18 @@
 import { Modal, Pressable, StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { postBudToUserGarden } from "../app/utils/api";
+import { waterGardenPlant } from "../app/utils/api";
 import { useState } from "react";
 
 export default function WaterGardenPlantBtn(props) {
-  const { plantInfo } = props;
+  const { plantDetails } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
-  function addPlantToUserGarden() {
+  function waterGardenPlant() {
     setIsPosting(() => {
       return true;
     });
-    postBudToUserGarden(1, {
-      common_name: plantInfo.common_name,
-      plant_id: plantInfo.plant_id,
-    })
+    waterGardenPlant(1, plantDetails.garden_plant_id) // update userId with useContext and check
       .then(() => {
         setIsPosting(() => {
           return false;
@@ -54,13 +51,13 @@ export default function WaterGardenPlantBtn(props) {
           {isPosting ? (
             <View style={styles.modalLoader}>
               <ActivityIndicator size="large" color="#78A55A" />
-              <Text>Adding to your garden</Text>
+              <Text>Watering your plant...</Text>
             </View>
           ) : null}
         </Pressable>
         <View style={styles.modalBox}>
           <Image
-            src={plantInfo.img_url}
+            src={plantDetails.img_url}
             style={{
               height: "35%",
               width: "35%",
@@ -72,9 +69,9 @@ export default function WaterGardenPlantBtn(props) {
           <Text
             style={
               styles.modalText
-            }>{`Would you like to add ${plantInfo.common_name} to your garden?`}</Text>
+            }>{`Would you like to water ${plantDetails.common_name} in your garden?`}</Text>
           <View style={styles.modalBtnContainer}>
-            <Pressable style={styles.modalBtn} onPress={addPlantToUserGarden} disabled={isPosting}>
+            <Pressable style={styles.modalBtn} onPress={waterGardenPlant} disabled={isPosting}>
               <Text style={styles.modalBtnText}>Yes</Text>
             </Pressable>
             <Pressable style={styles.modalBtn} onPress={hideModal} disabled={isPosting}>
