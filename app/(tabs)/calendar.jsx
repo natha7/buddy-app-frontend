@@ -4,17 +4,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
-import {getUserGardenByUserId} from "../utils/api";
+import { getUserGardenByUserId } from "../utils/api";
+import useUser from "../../hooks/useUser.jsx";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [userPlants, setUserPlants] = useState([]);
   const [markedDates, setMarkedDates] = useState({});
 
-  useEffect(() => {
-    const user_id = 1; // update dynamically based on who's logged-in
+  const user = useUser();
 
-    getUserGardenByUserId(user_id)
+  useEffect(() => {
+    getUserGardenByUserId(user)
       .then((fetchedPlants) => {
         setUserPlants(fetchedPlants);
         const dates = fetchedPlants.reduce((acc, plant) => {
