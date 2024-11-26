@@ -13,20 +13,20 @@ export default function WaterGardenPlantBtn(props) {
     waterGardenPlant(1, gardenPlantId)
       .then(() => {
         setIsPosting(false);
-        hideModal(); // Close the modal when the action is successful
+        hideModal();
       })
       .catch((err) => {
         setIsPosting(false);
-        hideModal(); // Optionally close the modal on error, or handle the error state
+        hideModal();
       });
   }
 
   function hideModal() {
-    setIsModalVisible(false); // Close the modal
+    setIsModalVisible(false);
   }
 
   function showModal() {
-    setIsModalVisible(true); // Show the modal
+    setIsModalVisible(true);
   }
 
   return (
@@ -36,8 +36,9 @@ export default function WaterGardenPlantBtn(props) {
       <View style={{ height: "80%", width: 1.5, backgroundColor: "#314C1C", marginRight: 10 }} />
       <View style={{ marginVertical: "auto" }}>
         <AntDesign name="plus" size={24} color="#314C1C" />
-        <Text style={{ color: "#314C1C", fontWeight: "600" }}>Water</Text>
+        <Text style={{ color: "#314C1C", fontWeight: 600 }}>Water</Text>
       </View>
+
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <Pressable style={styles.modalBg} onPress={hideModal}>
           {isPosting && (
@@ -48,16 +49,7 @@ export default function WaterGardenPlantBtn(props) {
           )}
         </Pressable>
         <View style={styles.modalBox}>
-          <Image
-            source={{ uri: plantDetails.default_image }}
-            style={{
-              height: "35%",
-              width: "35%",
-              borderRadius: 10,
-              borderColor: "#314C1C",
-              borderWidth: 1,
-            }}
-          />
+          <Image source={{ uri: plantDetails.default_image }} style={styles.modalImage} />
           <Text style={styles.modalText}>{`Would you like to water ${nickname}?`}</Text>
           <View style={styles.modalBtnContainer}>
             <Pressable
@@ -81,20 +73,17 @@ export default function WaterGardenPlantBtn(props) {
 
 const styles = StyleSheet.create({
   modalBtn: {
+    backgroundColor: "green",
     backgroundColor: "#78A55A33",
     width: "30%",
+    border: "2px",
     borderColor: "#314C1C",
     borderWidth: 1,
     borderRadius: 20,
     padding: 15,
     marginHorizontal: 12,
   },
-  modalLoader: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    alignItems: "center",
-  },
+  modalLoader: { position: "relative", top: "80%" },
   modalBg: {
     height: "100%",
     width: "100%",
@@ -106,7 +95,7 @@ const styles = StyleSheet.create({
   modalBox: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "white",
     borderRadius: 20,
