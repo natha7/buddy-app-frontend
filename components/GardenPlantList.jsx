@@ -1,11 +1,12 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { useCustomFonts } from "../hooks/useCustomFonts";
-import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "@/contexts/UserContext.jsx";
 
 export default function GardenPlantList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,12 +16,12 @@ export default function GardenPlantList() {
   const [fullData, setFullData] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
-  const { user_id = 1 } = route.params || {};
+  const { user } = useContext(UserContext);
 
-  const fetchUserGardenList = async (user_id) => {
+  const fetchUserGardenList = async (user) => {
     try {
       const response = await axios.get(
-        `https://buddy-app-backend.onrender.com/api/user_gardens/${user_id}`
+        `https://buddy-app-backend.onrender.com/api/user_gardens/${user}`
       );
       const data = response.data;
 
@@ -56,10 +57,10 @@ export default function GardenPlantList() {
 
   useEffect(() => {
     setIsLoading(true);
-    if (user_id) {
-      fetchUserGardenList(user_id);
+    if (user) {
+      fetchUserGardenList(user);
     }
-  }, [user_id]);
+  }, [user]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -91,7 +92,7 @@ export default function GardenPlantList() {
 
   if (error) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Error in fetching data ... Please check your internet connection!</Text>
       </View>
     );
@@ -107,7 +108,7 @@ export default function GardenPlantList() {
   //   return <View></View>;
   // } else {
   return (
-    <View style={{height: "100%" }}>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",
