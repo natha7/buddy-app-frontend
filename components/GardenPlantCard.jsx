@@ -1,4 +1,4 @@
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, Pressable } from "react-native";
 import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 import WaterGardenPlantBtn from "./WaterGardenPlantBtn.jsx";
 import thirstLevel from "./utils/thirstLevel";
