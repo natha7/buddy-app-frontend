@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
-import getUserGardenByUserId from "../utils/api";
+import {getUserGardenByUserId} from "../utils/api";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -24,7 +24,6 @@ const CalendarWithPlantWatering = () => {
         }, {});
 
         setMarkedDates(dates);
-        console.log(dates);
       })
       .catch((error) => {
         console.error("Error fetching user plants:", error.message);
@@ -53,7 +52,6 @@ const CalendarWithPlantWatering = () => {
           ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "green" } }),
         }}
         onDayPress={(day) => {
-          console.log("Selected date:", day.dateString);
           setSelectedDate(day.dateString);
         }}
         theme={{
