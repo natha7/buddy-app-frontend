@@ -42,15 +42,15 @@ export default function BudList() {
     return <View></View>;
   }
   return (
-    <View style={{ height: "100%" }}>
+    <View style={{ height: "100%", alignItems: "center" }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",
           fontSize: 26,
-          fontWeight: 600,
           marginTop: 30,
           color: "#78A55A",
-          marginLeft: 30,
+          marginBottom: 20,
+          textAlign: "center",
         }}>
         Find a Bud
       </Text>
@@ -58,7 +58,15 @@ export default function BudList() {
         placeholder_text={"Search for a new bud..."}
         setCurrBudSearch={setCurrBudSearch}
       />
-      <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
+      <ScrollView
+        style={{
+          width: "100%",
+          marginHorizontal: "auto",
+          marginVertical: 8,
+        }}
+        contentContainerStyle={{
+          alignItems: "center",
+        }}>
         {isLoading ? (
           <View
             style={{
@@ -89,7 +97,7 @@ export default function BudList() {
           </View>
         )}
       </ScrollView>
-      <AddYourOwnBtn />
+      {/* <AddYourOwnBtn /> */}
     </View>
   );
 }

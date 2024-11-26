@@ -25,7 +25,6 @@ export default function SearchInputBar(props) {
         width: 330,
         marginHorizontal: "auto",
         marginTop: 10,
-
         color: "#314C1C",
         fontWeight: 600,
         borderRadius: 20,

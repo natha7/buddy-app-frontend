@@ -2,6 +2,7 @@ import { Modal, Pressable, StyleSheet, Text, View, Image, ActivityIndicator } fr
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { postBudToUserGarden } from "../app/utils/api";
 import { useState } from "react";
+import capitaliseWords from "./utils/capitaliseWords";
 
 export default function AddBudBtn(props) {
   const { plantInfo } = props;
@@ -49,6 +50,7 @@ export default function AddBudBtn(props) {
         <AntDesign name="plus" size={24} color="#314C1C" />
         <Text style={{ color: "#314C1C", fontWeight: 600 }}>Add</Text>
       </View>
+
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <Pressable style={styles.modalBg} onPress={hideModal}>
           {isPosting ? (
@@ -69,10 +71,9 @@ export default function AddBudBtn(props) {
               borderWidth: 1,
             }}
           />
-          <Text
-            style={
-              styles.modalText
-            }>{`Would you like to add ${plantInfo.common_name} to your garden?`}</Text>
+          <Text style={styles.modalText}>{`Would you like to add ${capitaliseWords(
+            plantInfo.common_name
+          )} to your garden?`}</Text>
           <View style={styles.modalBtnContainer}>
             <Pressable style={styles.modalBtn} onPress={addPlantToUserGarden} disabled={isPosting}>
               <Text style={styles.modalBtnText}>Yes</Text>

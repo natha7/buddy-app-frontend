@@ -3,14 +3,17 @@ import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 import WaterGardenPlantBtn from "./WaterGardenPlantBtn.jsx";
 import thirstLevel from "./utils/thirstLevel";
 import { useRouter } from "expo-router";
+import capitaliseWords from "./utils/capitaliseWords";
 
 export default function GardenPlantCard(props) {
   const { userGarden, plantDetails, plantId } = props;
   const router = useRouter();
 
   const handlePress = () => {
-    console.log("Navigating to plantId:", plantId);
-    router.push(`/plants/${plantId}`);
+    router.push({
+      pathname: `/plants`,
+      params: plantId,
+    });
   };
 
   return (
@@ -22,37 +25,81 @@ export default function GardenPlantCard(props) {
           justifyContent: "space-between",
           backgroundColor: "#78A55A33",
           borderRadius: 20,
-          height: 100,
+          height: 120,
           width: 330,
           margin: "auto",
-          marginTop: 30,
+          marginTop: 8,
         }}>
+        {/* Plant Image Section */}
         <View
           style={{
-            marginLeft: 8,
+            height: 75,
+            width: 75,
             alignSelf: "center",
+            marginLeft: 16,
+            borderRadius: 10,
+            backgroundColor: "grey",
           }}>
           <Image
             source={{ uri: plantDetails.default_image }}
-            style={{ width: 80, height: 80, borderRadius: 5 }}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "center",
+              borderRadius: 10,
+              borderColor: "#314C1C",
+              borderWidth: 1,
+            }}
           />
         </View>
-        <View style={{ display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
-          <Text style={{ fontSize: 12, marginTop: 10, alignSelf: "auto", fontStyle: "italic" }}>
-            {plantDetails.common_name}
+
+        {/* Plant Details Section */}
+        <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
+          <Text
+            style={{
+              marginBottom: 1,
+              fontWeight: "600",
+              fontSize: 14,
+            }}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {capitaliseWords(plantDetails.common_name)}
           </Text>
-          <Text style={{ fontWeight: 500, marginRight: 10 }}>Nickname: {userGarden.nickname}</Text>
-          <View>
-            <Text style={{ fontWeight: 500, marginRight: 10, marginBottom: 10 }}>
-              {thirstLevel(userGarden.last_watered, plantDetails.watering_frequency_in_days)}
-              <WaterGardenPlantBtn
-                plantDetails={plantDetails}
-                gardenPlantId={userGarden.garden_plant_id}
-                nickname={userGarden.nickname}
-              />
-            </Text>
+          <Text
+            style={{
+              fontSize: 10,
+              fontStyle: "italic",
+              textAlign: "left",
+            }}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            Nickname: {capitaliseWords(userGarden.nickname)}
+          </Text>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 12,
+              alignItems: "center",
+            }}>
+            <View style={{ alignItems: "center", flex: 1 }}>
+              {getWaterFrequencyIcon(plantDetails.watering_frequency_in_days)}
+              <Text style={{ fontSize: 10 }}>Watering</Text>
+            </View>
+            <View style={{ alignItems: "center", flex: 1 }}>
+              <Text style={{ fontSize: 10 }}>
+                {thirstLevel(userGarden.last_watered, plantDetails.watering_frequency_in_days)}
+              </Text>
+            </View>
           </View>
         </View>
+        <WaterGardenPlantBtn
+          plantDetails={plantDetails}
+          gardenPlantId={userGarden.garden_plant_id}
+          nickname={userGarden.nickname}
+        />
       </View>
     </Pressable>
   );

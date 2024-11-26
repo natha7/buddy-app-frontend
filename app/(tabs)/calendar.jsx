@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     marginTop: 30,
     color: "#78A55A",
-    marginLeft: 30,
     marginBottom: 20,
     textAlign: "center",
   },
