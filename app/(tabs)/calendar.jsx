@@ -5,7 +5,7 @@ import { Calendar } from "react-native-calendars";
 import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
 import { getUserGardenByUserId } from "../utils/api";
-import useUser from "../../hooks/useUser.jsx";
+import useUser from "../../hooks/useUser";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -34,7 +34,7 @@ const CalendarWithPlantWatering = () => {
   // Render the event details
   const renderEvent = ({ item }) => (
     <View style={styles.eventItem}>
-      <Text style={styles.eventText}>🌱 {item.nickname} - Last Watered</Text>
+      <Text style={styles.eventText}>🌱 {item.nickname}</Text>
     </View>
   );
 
@@ -65,7 +65,7 @@ const CalendarWithPlantWatering = () => {
       <View style={styles.eventsContainer}>
         <Text style={styles.subtitle}>
           {selectedDate
-            ? `Watering details on ${selectedDate}:`
+            ? `Last watered on ${selectedDate}:`
             : "Select a date to see watering details."}
         </Text>
         <FlatList
