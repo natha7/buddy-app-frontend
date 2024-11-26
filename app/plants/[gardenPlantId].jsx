@@ -1,57 +1,25 @@
 import { Text, View, StyleSheet } from "react-native";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "expo-router/build/hooks";
-import { useRouter } from "expo-router";
 import { getUserGardenPlantByUserIdAndPlantId } from "../utils/api";
 import useUser from "../../hooks/useUser";
-import { usePlantContext } from "../../contexts/PlantContext";
 import { useRoute } from "@react-navigation/native";
 
 export default function SingleGardenPlantById() {
   const route = useRoute(); // Access route params here
-  const { garden_plant_id } = route.params;
-  console.log(garden_plant_id, "<< route.params");
-  // const { garden_plant_id } = useSearchParams();
-  // const router = useRouter();
-  // const { garden_plant_id } = router.query;
-  // const [plant, setPlant] = useState(null);
-  // const [error, setError] = useState(null);
+  const { gardenPlantId } = route.params;
+  const [gardenPlant, setGardenPlant] = useState({});
   const user = useUser();
 
-  const { gardenPlant, error, loading, fetchPlantData } = usePlantContext();
-
   useEffect(() => {
-    fetchPlantData(user);
-  }, [garden_plant_id, fetchPlantData]);
-
-  // useEffect(() => {
-  //   // if (!user || !plantId) {
-  //   //   console.warn("Skipping fetch: Missing user or plantId");
-  //   //   return;
-  //   // }
-  //   console.log(garden_plant_id, "<< garden_plant_id");
-
-  //   getUserGardenPlantByUserIdAndPlantId(user, garden_plant_id)
-  //     .then((plantData) => {
-  //       console.log(user_id, "<< user_id");
-  //       setPlant(plantData);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Failed to fetch plant details:", error.message);
-  //       setError(error.message || "An error occurred while fetching plant details.");
-  //     });
-  // }, [user, garden_plant_id]);
+    getUserGardenPlantByUserIdAndPlantId(user, gardenPlantId).then((res) => {
+      setGardenPlant(() => {
+        return res;
+      });
+    });
+  }, [gardenPlantId]);
 
   const fontsLoaded = useCustomFonts();
-
-  // if (!plant || !fontsLoaded) {
-  //   return (
-  //     <View style={styles.loadingContainer}>
-  //       <Text>Loading...</Text>
-  //     </View>
-  //   );
-  // }
 
   return (
     <View style={styles.container}>
