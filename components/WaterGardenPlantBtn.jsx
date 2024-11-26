@@ -4,39 +4,31 @@ import { waterGardenPlant } from "../app/utils/api";
 import { useState } from "react";
 
 export default function WaterGardenPlantBtn(props) {
-  const { plantDetails } = props;
+  const { plantDetails, gardenPlantId, nickname } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
-  function waterGardenPlant() {
-    setIsPosting(() => {
-      return true;
-    });
-    waterGardenPlant(1, plantDetails.garden_plant_id) // update userId with useContext and check
+  function handleWaterGardenPlant() {
+    setIsPosting(true);
+    waterGardenPlant(1, gardenPlantId)
       .then(() => {
-        setIsPosting(() => {
-          return false;
-        });
-        hideModal();
+        setIsPosting(false);
+        hideModal(); // Close the modal when the action is successful
       })
       .catch((err) => {
-        setIsPosting(() => {
-          return false;
-        });
+        setIsPosting(false);
+        hideModal(); // Optionally close the modal on error, or handle the error state
       });
   }
 
   function hideModal() {
-    setIsModalVisible(() => {
-      return false;
-    });
+    setIsModalVisible(false); // Close the modal
   }
 
   function showModal() {
-    setIsModalVisible(() => {
-      return true;
-    });
+    setIsModalVisible(true); // Show the modal
   }
+
   return (
     <Pressable
       style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 15 }}
@@ -44,20 +36,20 @@ export default function WaterGardenPlantBtn(props) {
       <View style={{ height: "80%", width: 1.5, backgroundColor: "#314C1C", marginRight: 10 }} />
       <View style={{ marginVertical: "auto" }}>
         <AntDesign name="plus" size={24} color="#314C1C" />
-        <Text style={{ color: "#314C1C", fontWeight: 600 }}>Add</Text>
+        <Text style={{ color: "#314C1C", fontWeight: "600" }}>Water</Text>
       </View>
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <Pressable style={styles.modalBg} onPress={hideModal}>
-          {isPosting ? (
+          {isPosting && (
             <View style={styles.modalLoader}>
               <ActivityIndicator size="large" color="#78A55A" />
               <Text>Watering your plant...</Text>
             </View>
-          ) : null}
+          )}
         </Pressable>
         <View style={styles.modalBox}>
           <Image
-            src={plantDetails.img_url}
+            source={{ uri: plantDetails.default_image }}
             style={{
               height: "35%",
               width: "35%",
@@ -66,15 +58,18 @@ export default function WaterGardenPlantBtn(props) {
               borderWidth: 1,
             }}
           />
-          <Text
-            style={
-              styles.modalText
-            }>{`Would you like to water ${plantDetails.common_name} in your garden?`}</Text>
+          <Text style={styles.modalText}>{`Would you like to water ${nickname}?`}</Text>
           <View style={styles.modalBtnContainer}>
-            <Pressable style={styles.modalBtn} onPress={waterGardenPlant} disabled={isPosting}>
+            <Pressable
+              style={[styles.modalBtn, { opacity: isPosting ? 0.5 : 1 }]}
+              onPress={handleWaterGardenPlant}
+              disabled={isPosting}>
               <Text style={styles.modalBtnText}>Yes</Text>
             </Pressable>
-            <Pressable style={styles.modalBtn} onPress={hideModal} disabled={isPosting}>
+            <Pressable
+              style={[styles.modalBtn, { opacity: isPosting ? 0.5 : 1 }]}
+              onPress={hideModal}
+              disabled={isPosting}>
               <Text style={styles.modalBtnText}>No</Text>
             </Pressable>
           </View>
@@ -86,17 +81,20 @@ export default function WaterGardenPlantBtn(props) {
 
 const styles = StyleSheet.create({
   modalBtn: {
-    backgroundColor: "green",
     backgroundColor: "#78A55A33",
     width: "30%",
-    border: "2px",
     borderColor: "#314C1C",
     borderWidth: 1,
     borderRadius: 20,
     padding: 15,
     marginHorizontal: 12,
   },
-  modalLoader: { position: "relative", top: "80%" },
+  modalLoader: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    alignItems: "center",
+  },
   modalBg: {
     height: "100%",
     width: "100%",
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
   modalBox: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
     borderRadius: 20,

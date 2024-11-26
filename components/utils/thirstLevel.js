@@ -3,11 +3,12 @@ export default function thirstLevel(lastWatered, wateringFrequencyDays) {
   const nowMs = Date.now();
   const timeSinceLastWateredDays = (nowMs - lastWateredMs) / (1000 * 60 * 60 * 24);
 
-  // Determine thirst level based on watering frequency
-  if (timeSinceLastWateredDays < wateringFrequencyDays * 0.5) {
-    return ""; // Not thirsty at all
+  if (wateringFrequencyDays == null) {
+    return ""; // If wateringFrequencyDays is null
   } else if (timeSinceLastWateredDays < wateringFrequencyDays) {
-    return "💧"; // Mildly thirsty
+    return ""; // Not thirsty
+  } else if (timeSinceLastWateredDays < wateringFrequencyDays * 1.5) {
+    return "💧"; // Slightly thirsty
   } else if (timeSinceLastWateredDays < wateringFrequencyDays * 2) {
     return "💧💧"; // Thirsty
   } else {
