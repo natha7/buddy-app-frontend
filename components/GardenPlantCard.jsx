@@ -1,9 +1,8 @@
 import { Text, View, Image, Pressable } from "react-native";
-import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 import WaterGardenPlantBtn from "./WaterGardenPlantBtn.jsx";
-import thirstLevel from "./utils/thirstLevel";
 import { useRouter } from "expo-router";
 import capitaliseWords from "./utils/capitaliseWords";
+import ThirstBar from "./ThirstBar";
 
 export default function GardenPlantCard(props) {
   const { userGarden, plantDetails, plantId } = props;
@@ -63,7 +62,7 @@ export default function GardenPlantCard(props) {
             }}
             numberOfLines={1}
             ellipsizeMode="tail">
-            {capitaliseWords(plantDetails.common_name)}
+            {capitaliseWords(userGarden.nickname)}
           </Text>
           <Text
             style={{
@@ -73,7 +72,7 @@ export default function GardenPlantCard(props) {
             }}
             numberOfLines={1}
             ellipsizeMode="tail">
-            Nickname: {capitaliseWords(userGarden.nickname)}
+            {capitaliseWords(plantDetails.common_name)}
           </Text>
 
           <View
@@ -84,15 +83,10 @@ export default function GardenPlantCard(props) {
               marginTop: 12,
               alignItems: "center",
             }}>
-            <View style={{ alignItems: "center", flex: 1 }}>
-              {getWaterFrequencyIcon(plantDetails.watering_frequency_in_days)}
-              <Text style={{ fontSize: 10 }}>Watering</Text>
-            </View>
-            <View style={{ alignItems: "center", flex: 1 }}>
-              <Text style={{ fontSize: 10 }}>
-                {thirstLevel(userGarden.last_watered, plantDetails.watering_frequency_in_days)}
-              </Text>
-            </View>
+            <ThirstBar
+              lastWatered={userGarden.last_watered}
+              wateringFrequency={plantDetails.watering_frequency_in_days}
+            />
           </View>
         </View>
         <WaterGardenPlantBtn

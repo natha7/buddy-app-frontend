@@ -64,17 +64,12 @@ export default function BudCard(props) {
           }}>
           <View style={{ alignItems: "center", flex: 1 }}>
             {getSunlightIcon(plantData.sunlight[0])}
-            <Text style={{ fontSize: 10 }}>Sunlight</Text>
           </View>
 
-          <View style={{ alignItems: "center", flex: 1 }}>
-            {getCycleIcon(plantData.cycle)}
-            <Text style={{ fontSize: 10 }}>Cycle</Text>
-          </View>
+          <View style={{ alignItems: "center", flex: 1 }}>{getCycleIcon(plantData.cycle)}</View>
 
           <View style={{ alignItems: "center", flex: 1 }}>
             {getWaterFrequencyIcon(plantData.watering_frequency_in_days)}
-            <Text style={{ fontSize: 10 }}>Watering</Text>
           </View>
         </View>
       </View>

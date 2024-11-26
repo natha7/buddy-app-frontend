@@ -56,13 +56,12 @@ export default function AddBudBtn(props) {
           {isPosting ? (
             <View style={styles.modalLoader}>
               <ActivityIndicator size="large" color="#78A55A" />
-              <Text>Adding to your garden</Text>
             </View>
           ) : null}
         </Pressable>
         <View style={styles.modalBox}>
           <Image
-            src={plantInfo.img_url}
+            source={{ uri: plantInfo.img_url }}
             style={{
               height: "35%",
               width: "35%",
@@ -90,17 +89,22 @@ export default function AddBudBtn(props) {
 
 const styles = StyleSheet.create({
   modalBtn: {
-    backgroundColor: "green",
     backgroundColor: "#78A55A33",
     width: "30%",
-    border: "2px",
     borderColor: "#314C1C",
     borderWidth: 1,
     borderRadius: 20,
-    padding: 15,
+    paddingVertical: 15,
     marginHorizontal: 12,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  modalLoader: { position: "relative", top: "80%" },
+  modalLoader: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -12.5 }, { translateY: -12.5 }],
+  },
   modalBg: {
     height: "100%",
     width: "100%",
@@ -137,7 +141,14 @@ const styles = StyleSheet.create({
   modalBtnText: {
     fontFamily: "Coustard",
     fontSize: 18,
-    margin: "auto",
     color: "#314C1C",
+    textAlign: "center",
+  },
+  modalImage: {
+    height: 150,
+    width: 150,
+    borderRadius: 10,
+    borderColor: "#314C1C",
+    borderWidth: 1,
   },
 });

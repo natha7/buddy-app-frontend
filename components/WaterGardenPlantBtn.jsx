@@ -2,15 +2,18 @@ import { Modal, Pressable, StyleSheet, Text, View, Image, ActivityIndicator } fr
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { waterGardenPlant } from "../app/utils/api";
 import { useState } from "react";
+import useUser from "../hooks/useUser";
 
 export default function WaterGardenPlantBtn(props) {
   const { plantDetails, gardenPlantId, nickname } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
+  const user = useUser();
+
   function handleWaterGardenPlant() {
     setIsPosting(true);
-    waterGardenPlant(1, gardenPlantId)
+    waterGardenPlant(user, gardenPlantId)
       .then(() => {
         setIsPosting(false);
         hideModal();
@@ -34,9 +37,9 @@ export default function WaterGardenPlantBtn(props) {
       style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 15 }}
       onPress={showModal}>
       <View style={{ height: "80%", width: 1.5, backgroundColor: "#314C1C", marginRight: 10 }} />
-      <View style={{ marginVertical: "auto" }}>
+      <View style={{ alignItems: "center" }}>
         <AntDesign name="plus" size={24} color="#314C1C" />
-        <Text style={{ color: "#314C1C", fontWeight: 600 }}>Water</Text>
+        <Text style={{ color: "#314C1C", fontWeight: "600", marginTop: 4 }}>Water</Text>
       </View>
 
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
@@ -44,7 +47,6 @@ export default function WaterGardenPlantBtn(props) {
           {isPosting && (
             <View style={styles.modalLoader}>
               <ActivityIndicator size="large" color="#78A55A" />
-              <Text>Watering your plant...</Text>
             </View>
           )}
         </Pressable>
@@ -73,17 +75,22 @@ export default function WaterGardenPlantBtn(props) {
 
 const styles = StyleSheet.create({
   modalBtn: {
-    backgroundColor: "green",
     backgroundColor: "#78A55A33",
     width: "30%",
-    border: "2px",
     borderColor: "#314C1C",
     borderWidth: 1,
     borderRadius: 20,
-    padding: 15,
+    paddingVertical: 15,
     marginHorizontal: 12,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  modalLoader: { position: "relative", top: "80%" },
+  modalLoader: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -12.5 }, { translateY: -12.5 }],
+  },
   modalBg: {
     height: "100%",
     width: "100%",
@@ -120,7 +127,14 @@ const styles = StyleSheet.create({
   modalBtnText: {
     fontFamily: "Coustard",
     fontSize: 18,
-    margin: "auto",
     color: "#314C1C",
+    textAlign: "center",
+  },
+  modalImage: {
+    height: "35%",
+    width: "35%",
+    borderRadius: 10,
+    borderColor: "#314C1C",
+    borderWidth: 1,
   },
 });
