@@ -1,78 +1,95 @@
-import { ScrollView, Text, Pressable, View } from "react-native";
+import { ScrollView, Text, ActivityIndicator, View } from "react-native";
 import BudCard from "./BudCard.jsx";
 import SearchInputBar from "./SearchInputBar.jsx";
 import AddYourOwnBtn from "./AddYourOwnBtn.jsx";
-import { useFonts, Coustard_400Regular, Coustard_900Black } from "@expo-google-fonts/coustard";
+import { useCustomFonts } from "../hooks/useCustomFonts";
+import { getAllPlants } from "../app/utils/api.js";
+import { useEffect, useState } from "react";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 export default function BudList() {
-  let [fontsLoaded] = useFonts({
-    Coustard_400Regular,
-    Coustard_900Black,
-  });
+  const fontsLoaded = useCustomFonts();
+  const [plants, setPlants] = useState([]);
+  const [currBudSearch, setCurrBudSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorStatus, setErrorStatus] = useState(0);
+
+  useEffect(() => {
+    setErrorStatus(() => {
+      return 0;
+    });
+    setIsLoading(() => {
+      return true;
+    });
+    getAllPlants(currBudSearch)
+      .then((fetchedPlants) => {
+        setPlants(() => {
+          return fetchedPlants;
+        });
+        setIsLoading(() => {
+          return false;
+        });
+      })
+      .catch((err) => {
+        setIsLoading(() => {
+          return false;
+        });
+        setErrorStatus(err.response.status);
+      });
+  }, [currBudSearch]);
 
   if (!fontsLoaded) {
     return <View></View>;
-  } else {
-    return (
-      <View style={{ height: "100%" }}>
-        <Text
-          style={{
-            fontFamily: "Coustard_900Black",
-            fontSize: 26,
-            fontWeight: 600,
-            marginTop: 30,
-            color: "#78A55A",
-            marginLeft: 30,
-          }}>
-          Find a Bud
-        </Text>
-        <SearchInputBar placeholder_text={"Search for a new bud..."} />
-        <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
-          <View>
-            <BudCard
-              img_url={
-                "https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600"
-              }
-              common_name={"Derek"}
-              latin_name={"Derekius Maximus"}
-              cycle={"Perennial"}
-              sunlight={"full sun"}
-              watering_frequency={7}
-            />
-            <BudCard
-              img_url={
-                "https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600"
-              }
-              common_name={"Rose"}
-              latin_name={"Rosus"}
-              cycle={"Perennial"}
-              sunlight={"part shade"}
-              watering_frequency={3}
-            />
-            <BudCard
-              img_url={
-                "https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600"
-              }
-              common_name={"Tulip"}
-              latin_name={"Tulipeseus"}
-              cycle={"Annual"}
-              sunlight={"full sun"}
-              watering_frequency={2}
-            />
-            <BudCard
-              img_url={
-                "https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=600"
-              }
-              common_name={"Phil"}
-              latin_name={"Philo"}
-              cycle={"Biennial"}
-              sunlight={"part shade"}
-              watering_frequency={null}
-            />
-          </View>
-        </ScrollView>
-        <AddYourOwnBtn />
-      </View>
-    );
   }
+  return (
+    <View style={{ height: "100%" }}>
+      <Text
+        style={{
+          fontFamily: "Coustard_900Black",
+          fontSize: 26,
+          fontWeight: 600,
+          marginTop: 30,
+          color: "#78A55A",
+          marginLeft: 30,
+        }}>
+        Find a Bud
+      </Text>
+      <SearchInputBar
+        placeholder_text={"Search for a new bud..."}
+        setCurrBudSearch={setCurrBudSearch}
+      />
+      <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
+        {isLoading ? (
+          <View
+            style={{
+              minHeight: "100%",
+              minWidth: "100%",
+            }}>
+            <View style={{ margin: "auto" }}>
+              <ActivityIndicator size="large" color="#78A55A" />
+              <Text>Loading plants...</Text>
+            </View>
+          </View>
+        ) : errorStatus === 404 || plants.length === 0 ? (
+          <View
+            style={{
+              minHeight: "100%",
+              minWidth: "100%",
+            }}>
+            <View style={{ margin: "auto", display: "flex", alignItems: "center" }}>
+              <FontAwesome6 name="plant-wilt" size={26} color="#314C1C" />
+              <Text>No plants found</Text>
+            </View>
+          </View>
+        ) : (
+          <View>
+            {plants.map((plant) => {
+              return <BudCard key={plant._id} plantData={plant} />;
+            })}
+          </View>
+        )}
+      </ScrollView>
+      <AddYourOwnBtn />
+    </View>
+  );
 }

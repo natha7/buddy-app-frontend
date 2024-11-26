@@ -1,14 +1,11 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
-import SearchInputBar from "./SearchInputBar.jsx";
-import { useFonts, Coustard_400Regular, Coustard_900Black } from "@expo-google-fonts/coustard";
+import { useCustomFonts } from "../hooks/useCustomFonts";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
-// import {getUserGardenByUserId} from "../app/apiCall.jsx"
-// import api from "../app/apiCall.jsx";
 
 export default function GardenPlantList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +42,6 @@ export default function GardenPlantList() {
           })
         );
         setUserGardenList(userPlantsExtra);
-        console.log(userPlantsExtra, "<<< Fetched data from both APIs");
         setFullData(userPlantsExtra);
       } else {
         console.error("Unexpected API response format:", data);
@@ -95,7 +91,7 @@ export default function GardenPlantList() {
 
   if (error) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
         <Text>Error in fetching data ... Please check your internet connection!</Text>
       </View>
     );
@@ -105,12 +101,13 @@ export default function GardenPlantList() {
   //   Coustard_400Regular,
   //   Coustard_900Black,
   // });
+  // const fontsLoaded = useCustomFonts();
 
   // if (!fontsLoaded) {
   //   return <View></View>;
   // } else {
   return (
-    <>
+    <View style={{height: "100%" }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",
@@ -122,7 +119,7 @@ export default function GardenPlantList() {
         }}>
         Your Garden:
       </Text>
-      {/* <SearchInputBar placeholder_text={"Search Plants..."} clear/> */}
+
       <TextInput
         placeholder="Search Plants..."
         clearButtonMode="always"
@@ -141,7 +138,7 @@ export default function GardenPlantList() {
         value={searchQuery}
         onChangeText={(query) => handleSearch(query)}
       />
-      <ScrollView style={{ height: "auto", width: "auto", margin: "auto" }}>
+      <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
         {userGardenList.map((userGarden) => (
           <GardenPlantCard
             key={userGarden._id}
@@ -150,10 +147,6 @@ export default function GardenPlantList() {
           />
         ))}
       </ScrollView>
-      {/* <GardenPlantCard nickName={"Dave"} thirstiness={1} commonName={"Basil"} />
-          <GardenPlantCard nickName={"Nathan"} thirstiness={2} commonName={"Sunflower"} />
-          <GardenPlantCard nickName={"Sue"} thirstiness={3} commonName={"Rose"} /> */}
-
       <Pressable
         onPress={() =>
           navigation.navigate("(tabs)", {
@@ -172,6 +165,6 @@ export default function GardenPlantList() {
         }}>
         <Text style={{ fontSize: 16, color: "#314C1C" }}>Find Plants</Text>
       </Pressable>
-    </>
+    </View>
   );
 }

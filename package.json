@@ -2,6 +2,7 @@
   "name": "buddy-app-frontend",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -41,7 +42,7 @@
     "react-native-calendars": "^1.1307.0",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-reanimated": "~3.16.1",
-    "react-native-safe-area-context": "4.12.0",
+    "react-native-safe-area-context": "^4.12.0",
     "react-native-screens": "~4.1.0",
     "react-native-stack": "^1.0.0-alpha11",
     "react-native-web": "~0.19.13",

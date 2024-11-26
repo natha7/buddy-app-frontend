@@ -1,8 +1,7 @@
-import { ScrollView, Text, View, Image } from "react-native";
+import { Text, View, Image } from "react-native";
 import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 
 export default function GardenPlantCard(props) {
-  // const { nickName, thirstiness, commonName } = props;
   const { userGarden, plantDetails } = props;
 
   return (
@@ -32,9 +31,7 @@ export default function GardenPlantCard(props) {
         <Text style={{ fontWeight: 500, marginRight: 10 }}>Nickname: {userGarden.nickname}</Text>
         <View>
           <Text style={{ fontWeight: 500, marginRight: 10, marginBottom: 10 }}>
-            {/* Thirstiness: {"💧".repeat(thirstiness)} */}
            {getWaterFrequencyIcon(plantDetails.watering_frequency_in_days)}
-            {/* Last Watered 💧: {userGarden.last_watered} */}
           </Text>
         </View>
       </View>

@@ -1,39 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
-
-// Sample user_plants data
-const userPlants = [
-  {
-    _id: "67406a8271fdd5484fabe135",
-    garden_plant_id: 1,
-    plant_id: 385,
-    last_watered: 1732277295224, // Example date in dd/mm/yy format
-    nickname: "Sammy",
-    journal_entries: [],
-  },
-  {
-    _id: "67406a8271fdd5484fabe139",
-    garden_plant_id: 2,
-    plant_id: 125,
-    last_watered: "12/11/24",
-    nickname: "Johnny",
-    journal_entries: [],
-  },
-];
-
-console.log(Date.now());
+import formatDate from "../utils/dateFormatter";
+import { useCustomFonts } from "../../hooks/useCustomFonts";
+import {getUserGardenByUserId} from "../utils/api";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
+  const [userPlants, setUserPlants] = useState([]);
+  const [markedDates, setMarkedDates] = useState({});
 
-  // Create markedDates object based on userPlants
-  const markedDates = userPlants.reduce((acc, plant) => {
-    const formattedDate = formatDate(plant.last_watered);
-    acc[formattedDate] = { marked: true, dotColor: "green" };
-    return acc;
-  }, {});
+  useEffect(() => {
+    const user_id = 1; // update dynamically based on who's logged-in
+
+    getUserGardenByUserId(user_id)
+      .then((fetchedPlants) => {
+        setUserPlants(fetchedPlants);
+        const dates = fetchedPlants.reduce((acc, plant) => {
+          const formattedDate = formatDate(plant.last_watered);
+          acc[formattedDate] = { marked: true, dotColor: "green" };
+          return acc;
+        }, {});
+
+        setMarkedDates(dates);
+      })
+      .catch((error) => {
+        console.error("Error fetching user plants:", error.message);
+      });
+  }, []);
 
   // Render the event details
   const renderEvent = ({ item }) => (
@@ -42,21 +37,26 @@ const CalendarWithPlantWatering = () => {
     </View>
   );
 
+  const fontsLoaded = useCustomFonts();
+
+  if (!fontsLoaded) {
+    return <View></View>;
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Text style={styles.title}>Plant Watering Calendar</Text>
+      <Text style={styles.title}>Watering Calendar</Text>
       <Calendar
         markedDates={{
           ...markedDates,
-          ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "orange" } }),
+          ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "green" } }),
         }}
         onDayPress={(day) => {
-          console.log("Selected date:", day.dateString);
           setSelectedDate(day.dateString);
         }}
         theme={{
           todayTextColor: "green",
-          selectedDayBackgroundColor: "orange",
+          selectedDayBackgroundColor: "green",
           dotColor: "blue",
           arrowColor: "green",
         }}
@@ -88,14 +88,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Coustard_900Black",
+    fontSize: 26,
+    marginTop: 30,
+    color: "#78A55A",
+    marginLeft: 30,
     marginBottom: 20,
     textAlign: "center",
   },
   subtitle: {
+    fontFamily: "Coustard_400Regular",
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#78A55A",
+    letterSpacing: 0.3,
     marginVertical: 10,
     textAlign: "center",
   },
