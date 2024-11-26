@@ -37,6 +37,8 @@ export default function BudCard(props) {
             width: "100%",
             alignSelf: "center",
             borderRadius: 10,
+            borderColor: "#314C1C",
+            borderWidth: 1,
           }}
         />
       </View>
@@ -74,7 +76,11 @@ export default function BudCard(props) {
         </View>
       </View>
       <AddBudBtn
-        plantNameAndId={{ common_name: plantData.common_name, plant_id: plantData.plant_id }}
+        plantInfo={{
+          common_name: plantData.common_name,
+          plant_id: plantData.plant_id,
+          img_url: plantData.default_image,
+        }}
       />
     </View>
   );
