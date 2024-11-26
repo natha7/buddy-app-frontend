@@ -32,12 +32,18 @@ export function waterGardenPlant(user_id, garden_plant_id) {
 }
 
 export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
+  if (!user_id || !garden_plant_id) {
+    return Promise.reject(new Error("Invalid user_id or garden_plant_id provided"));
+  }
+
   return instance
     .get(`/user_gardens/${user_id}/plants/${garden_plant_id}`)
-    .then(({ data }) => {
-      return data.plant;
+    .then((response) => {
+      return response.data.plant; // Return the 'plant' object directly
     })
-    .catch((err) => {
-      return err;
+    .catch((error) => {
+      console.error("Error fetching plant data:", error.response?.data || error.message);
+      // Re-throw the error to handle it in the caller
+      throw error;
     });
 }

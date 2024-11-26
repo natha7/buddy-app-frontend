@@ -5,12 +5,12 @@ import thirstLevel from "./utils/thirstLevel";
 import { useRouter } from "expo-router";
 
 export default function GardenPlantCard(props) {
-  const { userGarden, plantDetails, plantId } = props;
+  const { userGarden, plantDetails } = props;
   const router = useRouter();
 
   const handlePress = () => {
-    console.log("Navigating to plantId:", plantId);
-    router.push(`/plants/${plantId}`);
+    const gardenPlantId = userGarden.garden_plant_id;
+    router.push(`/plants/${gardenPlantId}`);
   };
 
   return (
