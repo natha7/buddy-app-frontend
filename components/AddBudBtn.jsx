@@ -2,17 +2,19 @@ import { Modal, Pressable, StyleSheet, Text, View, Image, ActivityIndicator } fr
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { postBudToUserGarden } from "../app/utils/api";
 import { useState } from "react";
+import useUser from "../hooks/useUser.jsx";
 
 export default function AddBudBtn(props) {
   const { plantInfo } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
+  const userId = useUser();
 
   function addPlantToUserGarden() {
     setIsPosting(() => {
       return true;
     });
-    postBudToUserGarden(1, {
+    postBudToUserGarden(userId, {
       common_name: plantInfo.common_name,
       plant_id: plantInfo.plant_id,
     })

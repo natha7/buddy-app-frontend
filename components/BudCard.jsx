@@ -1,5 +1,4 @@
 import { Image, Text, View } from "react-native";
-
 import { getSunlightIcon } from "./utils/getSunlightIcon";
 import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 import { getCycleIcon } from "./utils/getCycleIcon";

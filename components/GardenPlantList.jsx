@@ -1,22 +1,22 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { useCustomFonts } from "../hooks/useCustomFonts";
-import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "@/contexts/UserContext.jsx";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import useUser from "../hooks/useUser.jsx";
 
 export default function GardenPlantList() {
+  const user = useUser();
+  const isFocused = useIsFocused();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [userGardenList, setUserGardenList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [fullData, setFullData] = useState([]);
   const navigation = useNavigation();
-  const route = useRoute();
-  const { user } = useContext(UserContext);
 
   const fetchUserGardenList = async (user) => {
     try {
@@ -60,7 +60,7 @@ export default function GardenPlantList() {
     if (user) {
       fetchUserGardenList(user);
     }
-  }, [user]);
+  }, [isFocused]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
