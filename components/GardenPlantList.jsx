@@ -2,11 +2,11 @@ import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from 
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
-import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "@/contexts/UserContext.jsx";
+import { getPlantByPlantId, getUserGardenByUserId } from "@/app/utils/api.js";
 
 export default function GardenPlantList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,41 +18,36 @@ export default function GardenPlantList() {
   const route = useRoute();
   const { user } = useContext(UserContext);
 
-  const fetchUserGardenList = async (user) => {
-    try {
-      const response = await axios.get(
-        `https://buddy-app-backend.onrender.com/api/user_gardens/${user}`
-      );
-      const data = response.data;
-
-      if (data && data.userGarden && data.userGarden.user_plants) {
-        const userPlants = data.userGarden.user_plants;
-        const userPlantsExtra = await Promise.all(
-          userPlants.map(async (userPlant) => {
-            try {
-              const plantResponse = await axios.get(
-                `https://buddy-app-backend.onrender.com/api/plants/${userPlant.plant_id}`
-              );
-              const extraPlantData = plantResponse.data;
-
-              return { ...userPlant, plantDetails: extraPlantData };
-            } catch (err) {
-              console.error(`Error fetching plant data for plant_id ${userPlant.plant_id}:`, err);
+  const fetchUserGardenList = (user) => {
+    getUserGardenByUserId(user)
+      .then((userPlants) => {
+        const userPlantsExtraPromises = userPlants.map((userPlant) => {
+          const userPlantId = userPlant.plant_id;
+          return getPlantByPlantId(userPlantId)
+            .then(({ data }) => {
+              return {
+                ...userPlant,
+                plantDetails: data,
+              };
+            })
+            .catch((err) => {
+              console.error(`Error fetching plant data for plant_id ${userPlantId}:`, err);
               return userPlant;
-            }
-          })
-        );
+            });
+        });
+
+        return Promise.all(userPlantsExtraPromises);
+      })
+      .then((userPlantsExtra) => {
         setUserGardenList(userPlantsExtra);
         setFullData(userPlantsExtra);
-      } else {
-        console.error("Unexpected API response format:", data);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setError(error);
-      console.error("Error fetching user garden:", error.message || error);
-      setIsLoading(false);
-    }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching user garden or resolving plant data:", err.message || err);
+        setError(err);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {

@@ -21,6 +21,7 @@ export function getAllPlants(searchTerm) {
     return data.plants;
   });
 }
+
 export function postBudToUserGarden(user_id, plantToSend) {
   return instance.post(`user_garden/${user_id}/plants`, plantToSend);
 }
@@ -40,4 +41,10 @@ export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
     .catch((err) => {
       return err;
     });
+}
+
+export function getPlantByPlantId(plant_id) {
+  return instance.get(`/plants/${plant_id}`).then((plantResponse) => {
+    return plantResponse;
+  });
 }
