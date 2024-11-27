@@ -53,7 +53,6 @@ export default function JournalSection(props) {
       </ScrollView>
       <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
         <BackBtn />
-        <DeletePlantBtn />
         <AddEntryBtn />
       </View>
     </View>

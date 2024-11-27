@@ -5,6 +5,7 @@ import { getPlantByPlantId, getUserGardenPlantByUserIdAndPlantId } from "../../u
 import useUser from "../../../hooks/useUser";
 import { useRoute } from "@react-navigation/native";
 import JournalSection from "../../../components/JournalSection";
+import DeletePlantBtn from "../../../components/DeletePlantBtn";
 
 export default function SingleGardenPlantById() {
   const route = useRoute();
@@ -47,12 +48,21 @@ export default function SingleGardenPlantById() {
           }}>
           <View style={{ margin: "auto" }}>
             <ActivityIndicator size="large" color="#78A55A" />
-            <Text>Loading plants...</Text>
+            <Text>Loading plant...</Text>
           </View>
         </View>
       ) : (
         <View>
-          <Text style={styles.title}>{gardenPlant?.nickname}'s Details</Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+            }}>
+            <Text style={styles.title}>{gardenPlant?.nickname}'s Details</Text>
+            <DeletePlantBtn userAndPlantId={{ user, gardenPlantId }} plantInfo={gardenPlant} />
+          </View>
           <View
             style={{
               display: "flex",
@@ -64,7 +74,16 @@ export default function SingleGardenPlantById() {
               width: 330,
               margin: "auto",
             }}>
-            <Image src={generalInfo.default_image} style={{ height: 100, width: 100 }} />
+            <Image
+              source={{ uri: generalInfo.default_image }}
+              style={{
+                height: 80,
+                width: 80,
+                borderRadius: 20,
+                marginVertical: "auto",
+                marginLeft: 10,
+              }}
+            />
             <Text>Nickname: {gardenPlant.nickname}</Text>
             <Text>Thirst:</Text>
           </View>

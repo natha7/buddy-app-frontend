@@ -53,3 +53,7 @@ export function getPlantByPlantId(plantId) {
     return data;
   });
 }
+
+export function deletePlantByUserIdAndPlantId(userId, plantId) {
+  return instance.delete(`/user_garden/${userId}/plants/${plantId}`);
+}
