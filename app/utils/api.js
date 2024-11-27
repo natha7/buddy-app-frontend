@@ -41,3 +41,35 @@ export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
       return err;
     });
 }
+
+export async function IdentifyPlant(base64Image, apiKey, options = {}) {
+  const headers = new Headers({
+    "Api-Key": apiKey,
+    "Content-Type": "application/json",
+  });
+
+  const body = {
+    images: [base64Image], 
+    similar_images: true,  
+    classification_level: "all",
+    latitude: 49.207,
+    longitude: 16.608, 
+    ...options, 
+  };
+
+  const requestOptions = {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch("https://plant.id/api/v3/identification", requestOptions);
+    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error identifying plant:", error);
+    throw error;
+  }
+}
