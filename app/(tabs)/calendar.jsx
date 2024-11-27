@@ -6,6 +6,7 @@ import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
 import { getUserGardenByUserId } from "../utils/api";
 import useUser from "../../hooks/useUser";
+import capitaliseWords from "../../components/utils/capitaliseWords";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -34,7 +35,7 @@ const CalendarWithPlantWatering = () => {
   // Render the event details
   const renderEvent = ({ item }) => (
     <View style={styles.eventItem}>
-      <Text style={styles.eventText}>🌱 {item.nickname}</Text>
+      <Text style={styles.eventText}>🌱 {capitaliseWords(item.nickname)}</Text>
     </View>
   );
 

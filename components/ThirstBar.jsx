@@ -8,7 +8,7 @@ const ThirstBar = ({ thirstPercentage }) => {
         style={{
           height: 10,
           width: "70%",
-          backgroundColor: "#D3D3D3",
+          backgroundColor: "#78A55A",
           borderRadius: 5,
           overflow: "hidden",
         }}>
@@ -16,7 +16,7 @@ const ThirstBar = ({ thirstPercentage }) => {
           style={{
             height: "100%",
             width: `${thirstPercentage}%`,
-            backgroundColor: thirstPercentage > 75 ? "#FF6347" : "#78A55A",
+            backgroundColor: "#FF6347",
           }}
         />
       </View>

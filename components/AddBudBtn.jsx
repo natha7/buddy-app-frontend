@@ -45,7 +45,15 @@ export default function AddBudBtn(props) {
     <Pressable
       style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 15 }}
       onPress={showModal}>
-      <View style={{ height: "80%", width: 1.5, backgroundColor: "#314C1C", marginRight: 10 }} />
+      <View
+        style={{
+          height: "80%",
+          width: 1.5,
+          backgroundColor: "#314C1C",
+          marginRight: 10,
+          opacity: 0.3,
+        }}
+      />
       <View style={{ marginVertical: "auto" }}>
         <AntDesign name="plus" size={24} color="#314C1C" />
         <Text style={{ color: "#314C1C", fontWeight: 600 }}>Add</Text>
