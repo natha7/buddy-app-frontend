@@ -5,8 +5,7 @@ import { useState } from "react";
 import useUser from "../hooks/useUser";
 
 export default function WaterGardenPlantBtn(props) {
-  const { plantDetails, gardenPlantId, nickname, onWaterComplete } = props;
-
+  const { plantDetails, gardenPlantId, nickname, setCurrentThirst } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
@@ -16,9 +15,11 @@ export default function WaterGardenPlantBtn(props) {
     setIsPosting(true);
     waterGardenPlant(user, gardenPlantId)
       .then(() => {
+        setCurrentThirst(() => {
+          return 0;
+        });
         setIsPosting(false);
         hideModal();
-        if (onWaterComplete) onWaterComplete();
       })
       .catch((err) => {
         setIsPosting(false);
