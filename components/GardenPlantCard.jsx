@@ -7,6 +7,7 @@ import ThirstBar from "./ThirstBar";
 import { useState, useEffect } from "react";
 import { changeGardenPlantNickname } from "@/app/utils/api.js";
 import useUser from "@/hooks/useUser.jsx";
+import thirstBarCalculator from "../app/utils/thirstBarCalculator.js";
 
 export default function GardenPlantCard(props) {
   const router = useRouter();
@@ -14,23 +15,9 @@ export default function GardenPlantCard(props) {
   const userId = useUser();
   const [isNicknameEditable, setIsNicknameEditable] = useState(false);
   const [nicknameInput, setNicknameInput] = useState(capitaliseWords(userGarden.nickname));
-
-  const validWateringFrequency = plantDetails.watering_frequency_in_days || 7;
-
-  const [thirstPercentage, setThirstPercentage] = useState(() => {
-    const currentDate = new Date();
-    const lastWateredDate = userGarden.last_watered ? new Date(userGarden.last_watered) : null;
-
-    const elapsedDays = lastWateredDate
-      ? Math.round((currentDate - lastWateredDate) / (1000 * 60 * 60 * 24))
-      : validWateringFrequency;
-
-    return Math.min((elapsedDays / validWateringFrequency) * 100, 100);
-  });
-
-  const handleWateringComplete = () => {
-    setThirstPercentage(0);
-  };
+  const [currentThirst, setCurrentThirst] = useState(
+    thirstBarCalculator(userGarden.last_watered, plantDetails.watering_frequency_in_days)
+  );
 
   const handlePress = () => {
     if (!isEditMode) {
@@ -153,14 +140,14 @@ export default function GardenPlantCard(props) {
               marginTop: 12,
               alignItems: "center",
             }}>
-            <ThirstBar thirstPercentage={thirstPercentage} />
+            <ThirstBar currentThirst={currentThirst} />
           </View>
         </View>
         <WaterGardenPlantBtn
           plantDetails={plantDetails}
           gardenPlantId={userGarden.garden_plant_id}
           nickname={userGarden.nickname}
-          onWaterComplete={handleWateringComplete}
+          setCurrentThirst={setCurrentThirst}
         />
       </View>
     </Pressable>

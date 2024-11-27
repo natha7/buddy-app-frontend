@@ -2,11 +2,12 @@ import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from 
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getPlantByPlantId, getUserGardenByUserId } from "@/app/utils/api.js";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import userUser from "../hooks/useUser.jsx";
+import thirstBarCalculator from "@/app/utils/thirstBarCalculator.js";
 
 export default function GardenPlantList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,26 +26,21 @@ export default function GardenPlantList() {
     });
   }
 
-  const calculateThirstPercentage = (lastWateredDate, wateringFrequency) => {
-    const currentDate = new Date();
-    const lastWatered = new Date(lastWateredDate);
-    const daysElapsed = Math.floor((currentDate - lastWatered) / (1000 * 60 * 60 * 24)); // calculate days passed
-    const thirstPercentage = Math.min((daysElapsed / wateringFrequency) * 100, 100); // calculate percentage
-    return thirstPercentage;
-  };
-
-  // Sort plants by thirstiness
   const sortPlantsByThirst = (userPlants) => {
-    return userPlants
-      .map((plant) => {
-        // Add thirst percentage to each plant object
-        const thirstPercentage = calculateThirstPercentage(
-          plant.last_watered,
-          plant.watering_frequency_in_days || 7
-        );
-        return { ...plant, thirstPercentage };
-      })
-      .sort((a, b) => b.thirstPercentage - a.thirstPercentage); // Sort by thirst percentage (descending)
+    return userPlants.sort((a, b) => {
+      if (
+        thirstBarCalculator(a.last_watered, a.plantDetails.watering_frequency_in_days) >
+        thirstBarCalculator(b.last_watered, b.plantDetails.watering_frequency_in_days)
+      ) {
+        return -1;
+      }
+      if (
+        thirstBarCalculator(a.last_watered, a.plantDetails.watering_frequency_in_days) <
+        thirstBarCalculator(b.last_watered, b.plantDetails.watering_frequency_in_days)
+      ) {
+        return 1;
+      } else return 0;
+    });
   };
 
   const fetchUserGardenList = (user) => {
