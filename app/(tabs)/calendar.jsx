@@ -4,17 +4,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
-import {getUserGardenByUserId} from "../utils/api";
+import { getUserGardenByUserId } from "../utils/api";
+import useUser from "../../hooks/useUser";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [userPlants, setUserPlants] = useState([]);
   const [markedDates, setMarkedDates] = useState({});
 
-  useEffect(() => {
-    const user_id = 1; // update dynamically based on who's logged-in
+  const user = useUser();
 
-    getUserGardenByUserId(user_id)
+  useEffect(() => {
+    getUserGardenByUserId(user)
       .then((fetchedPlants) => {
         setUserPlants(fetchedPlants);
         const dates = fetchedPlants.reduce((acc, plant) => {
@@ -33,7 +34,7 @@ const CalendarWithPlantWatering = () => {
   // Render the event details
   const renderEvent = ({ item }) => (
     <View style={styles.eventItem}>
-      <Text style={styles.eventText}>🌱 {item.nickname} - Last Watered</Text>
+      <Text style={styles.eventText}>🌱 {item.nickname}</Text>
     </View>
   );
 
@@ -64,7 +65,7 @@ const CalendarWithPlantWatering = () => {
       <View style={styles.eventsContainer}>
         <Text style={styles.subtitle}>
           {selectedDate
-            ? `Watering details on ${selectedDate}:`
+            ? `Last watered on ${selectedDate}:`
             : "Select a date to see watering details."}
         </Text>
         <FlatList
@@ -92,7 +93,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     marginTop: 30,
     color: "#78A55A",
-    marginLeft: 30,
     marginBottom: 20,
     textAlign: "center",
   },

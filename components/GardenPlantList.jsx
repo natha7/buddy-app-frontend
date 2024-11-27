@@ -1,6 +1,8 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { useCustomFonts } from "../hooks/useCustomFonts";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
@@ -99,38 +101,59 @@ export default function GardenPlantList() {
   }
 
   return (
-    <View style={{ height: "100%" }}>
+    <View style={{ height: "100%", alignItems: "center" }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",
           fontSize: 26,
-          fontWeight: 600,
           marginTop: 30,
           color: "#78A55A",
-          marginLeft: 30,
+          marginBottom: 20,
+          textAlign: "center",
         }}>
-        Your Garden:
+        Your Garden
       </Text>
 
-      <TextInput
-        placeholder="Search Plants..."
-        clearButtonMode="always"
+      <View
         style={{
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          borderColor: "grey",
-          borderWidth: 1,
-          borderRadius: 8,
-          width: 300,
-          marginLeft: 34,
-          backgroundColor: "#f6ddcc",
+          display: "flex",
+          flexDirection: "row",
+          height: 40,
+          backgroundColor: "rgba(120, 165, 90, 0.5)",
+          width: 330,
+          marginHorizontal: "auto",
+          marginTop: 10,
+          color: "#314C1C",
+          fontWeight: 600,
+          borderRadius: 20,
+          alignItems: "center",
+        }}>
+        <FontAwesome5
+          name="search"
+          size={22}
+          color="#314C1C"
+          style={{ position: "absolute", left: 10 }}
+        />
+        <TextInput
+          style={{ height: "100%", width: "100%", paddingLeft: 40 }}
+          placeholderTextColor="#314C1C"
+          placeholder="Search for plants in your garden..."
+          clearButtonMode="always"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={searchQuery}
+          onChangeText={(query) => handleSearch(query)}
+        />
+      </View>
+      <ScrollView
+        style={{
+          width: "100%",
+          marginHorizontal: "auto",
+          marginVertical: 8,
         }}
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={searchQuery}
-        onChangeText={(query) => handleSearch(query)}
-      />
-      <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
+        contentContainerStyle={{
+          alignItems: "center",
+        }}>
         {userGardenList.map((userGarden) => (
           <GardenPlantCard
             key={userGarden._id}
@@ -147,16 +170,21 @@ export default function GardenPlantList() {
           })
         }
         style={{
-          display: "flex",
-          backgroundColor: "#f6ddcc",
-          width: 110,
-          padding: 10,
+          backgroundColor: "#78A55A",
+          paddingHorizontal: 20,
+          paddingVertical: 10,
           alignItems: "center",
-          marginLeft: 250,
-          borderRadius: 10,
+          alignSelf: "center",
+          borderRadius: 20,
           marginTop: 30,
+          marginBottom: 30,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 5,
+          elevation: 5,
         }}>
-        <Text style={{ fontSize: 16, color: "#314C1C" }}>Find Plants</Text>
+        <Text style={{ fontSize: 16, color: "#FFFFFF", fontWeight: "bold" }}>Find Plants</Text>
       </Pressable>
     </View>
   );
