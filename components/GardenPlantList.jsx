@@ -1,7 +1,9 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
-import { useCustomFonts } from "../hooks/useCustomFonts";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { UserContext } from "@/contexts/UserContext.jsx";
+import { getPlantByPlantId, getUserGardenByUserId } from "@/app/utils/api.js";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
@@ -15,45 +17,63 @@ export default function GardenPlantList() {
   const [error, setError] = useState(null);
   const [fullData, setFullData] = useState([]);
   const navigation = useNavigation();
-  const fontsLoaded = useCustomFonts();
+  const isFocused = useIsFocused();
 
   const user = userUser();
 
-  const fetchUserGardenList = async (user) => {
-    try {
-      const response = await axios.get(
-        `https://buddy-app-backend.onrender.com/api/user_gardens/${user}`
-      );
-      const data = response.data;
+  const calculateThirstPercentage = (lastWateredDate, wateringFrequency) => {
+    const currentDate = new Date();
+    const lastWatered = new Date(lastWateredDate);
+    const daysElapsed = Math.floor((currentDate - lastWatered) / (1000 * 60 * 60 * 24)); // calculate days passed
+    const thirstPercentage = Math.min((daysElapsed / wateringFrequency) * 100, 100); // calculate percentage
+    return thirstPercentage;
+  };
 
-      if (data && data.userGarden && data.userGarden.user_plants) {
-        const userPlants = data.userGarden.user_plants;
-        const userPlantsExtra = await Promise.all(
-          userPlants.map(async (userPlant) => {
-            try {
-              const plantResponse = await axios.get(
-                `https://buddy-app-backend.onrender.com/api/plants/${userPlant.plant_id}`
-              );
-              const extraPlantData = plantResponse.data;
-
-              return { ...userPlant, plantDetails: extraPlantData };
-            } catch (err) {
-              console.error(`Error fetching plant data for plant_id ${userPlant.plant_id}:`, err);
-              return userPlant;
-            }
-          })
+  // Sort plants by thirstiness
+  const sortPlantsByThirst = (userPlants) => {
+    return userPlants
+      .map((plant) => {
+        // Add thirst percentage to each plant object
+        const thirstPercentage = calculateThirstPercentage(
+          plant.last_watered,
+          plant.watering_frequency_in_days || 7
         );
-        setUserGardenList(userPlantsExtra);
-        setFullData(userPlantsExtra);
-      } else {
-        console.error("Unexpected API response format:", data);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setError(error);
-      console.error("Error fetching user garden:", error.message || error);
-      setIsLoading(false);
-    }
+        return { ...plant, thirstPercentage };
+      })
+      .sort((a, b) => b.thirstPercentage - a.thirstPercentage); // Sort by thirst percentage (descending)
+  };
+
+  const fetchUserGardenList = (user) => {
+    getUserGardenByUserId(user)
+      .then((userPlants) => {
+        const userPlantsExtraPromises = userPlants.map((userPlant) => {
+          const userPlantId = userPlant.plant_id;
+          return getPlantByPlantId(userPlantId)
+            .then((data) => {
+              return {
+                ...userPlant,
+                plantDetails: data,
+              };
+            })
+            .catch((err) => {
+              console.error(`Error fetching plant data for plant_id ${userPlantId}:`, err);
+              return userPlant;
+            });
+        });
+
+        return Promise.all(userPlantsExtraPromises);
+      })
+      .then((userPlantsExtra) => {
+        const sortedPlants = sortPlantsByThirst(userPlantsExtra);
+        setUserGardenList(sortedPlants);
+        setFullData(sortedPlants);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching user garden or resolving plant data:", err.message || err);
+        setError(err);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -61,7 +81,7 @@ export default function GardenPlantList() {
     if (user) {
       fetchUserGardenList(user);
     }
-  }, [user]);
+  }, [user, isFocused]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
