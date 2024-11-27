@@ -6,6 +6,7 @@ import useUser from "../../../hooks/useUser";
 import { useRoute } from "@react-navigation/native";
 import JournalSection from "../../../components/JournalSection";
 import DeletePlantBtn from "../../../components/DeletePlantBtn";
+import BackBtn from "../../../components/BackBtn";
 
 export default function SingleGardenPlantById() {
   const route = useRoute();
@@ -60,8 +61,8 @@ export default function SingleGardenPlantById() {
               justifyContent: "space-between",
               alignItems: "flex-end",
             }}>
+            <BackBtn />
             <Text style={styles.title}>{gardenPlant?.nickname}'s Details</Text>
-            <DeletePlantBtn userAndPlantId={{ user, gardenPlantId }} plantInfo={gardenPlant} />
           </View>
           <View
             style={{

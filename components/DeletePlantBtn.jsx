@@ -6,13 +6,13 @@ import { useRouter } from "expo-router";
 
 export default function DeletePlantBtn(props) {
   const { userAndPlantId, plantInfo } = props;
-  const { user, gardenPlantId } = userAndPlantId;
+  const { userId, gardenPlantId } = userAndPlantId;
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const router = useRouter();
 
   function removePlantFromGarden() {
-    deletePlantByUserIdAndPlantId(user, gardenPlantId).then(() => {
+    deletePlantByUserIdAndPlantId(userId, gardenPlantId).then(() => {
       hideModal();
       router.push("garden");
     });
@@ -32,7 +32,13 @@ export default function DeletePlantBtn(props) {
 
   return (
     <Pressable
-      style={{ height: 40, width: 40, borderRadius: 20, backgroundColor: "red" }}
+      style={{
+        height: 60,
+        width: 120,
+        borderRadius: 20,
+        backgroundColor: "#FAA0A0",
+        borderWidth: 1,
+      }}
       onPress={showModal}>
       <Text style={{ margin: "auto" }}>Delete Plant</Text>
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
