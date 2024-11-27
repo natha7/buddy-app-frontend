@@ -1,12 +1,14 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
-import { useCustomFonts } from "../hooks/useCustomFonts";
-import { useRoute } from "@react-navigation/native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { UserContext } from "@/contexts/UserContext.jsx";
+import { getPlantByPlantId, getUserGardenByUserId } from "@/app/utils/api.js";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "@/contexts/UserContext.jsx";
+import { useEffect, useState } from "react";
+import userUser from "../hooks/useUser.jsx";
 
 export default function GardenPlantList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,44 +17,63 @@ export default function GardenPlantList() {
   const [error, setError] = useState(null);
   const [fullData, setFullData] = useState([]);
   const navigation = useNavigation();
-  const route = useRoute();
-  const { user } = useContext(UserContext);
+  const isFocused = useIsFocused();
 
-  const fetchUserGardenList = async (user) => {
-    try {
-      const response = await axios.get(
-        `https://buddy-app-backend.onrender.com/api/user_gardens/${user}`
-      );
-      const data = response.data;
+  const user = userUser();
 
-      if (data && data.userGarden && data.userGarden.user_plants) {
-        const userPlants = data.userGarden.user_plants;
-        const userPlantsExtra = await Promise.all(
-          userPlants.map(async (userPlant) => {
-            try {
-              const plantResponse = await axios.get(
-                `https://buddy-app-backend.onrender.com/api/plants/${userPlant.plant_id}`
-              );
-              const extraPlantData = plantResponse.data;
+  const calculateThirstPercentage = (lastWateredDate, wateringFrequency) => {
+    const currentDate = new Date();
+    const lastWatered = new Date(lastWateredDate);
+    const daysElapsed = Math.floor((currentDate - lastWatered) / (1000 * 60 * 60 * 24)); // calculate days passed
+    const thirstPercentage = Math.min((daysElapsed / wateringFrequency) * 100, 100); // calculate percentage
+    return thirstPercentage;
+  };
 
-              return { ...userPlant, plantDetails: extraPlantData };
-            } catch (err) {
-              console.error(`Error fetching plant data for plant_id ${userPlant.plant_id}:`, err);
-              return userPlant;
-            }
-          })
+  // Sort plants by thirstiness
+  const sortPlantsByThirst = (userPlants) => {
+    return userPlants
+      .map((plant) => {
+        // Add thirst percentage to each plant object
+        const thirstPercentage = calculateThirstPercentage(
+          plant.last_watered,
+          plant.watering_frequency_in_days || 7
         );
-        setUserGardenList(userPlantsExtra);
-        setFullData(userPlantsExtra);
-      } else {
-        console.error("Unexpected API response format:", data);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setError(error);
-      console.error("Error fetching user garden:", error.message || error);
-      setIsLoading(false);
-    }
+        return { ...plant, thirstPercentage };
+      })
+      .sort((a, b) => b.thirstPercentage - a.thirstPercentage); // Sort by thirst percentage (descending)
+  };
+
+  const fetchUserGardenList = (user) => {
+    getUserGardenByUserId(user)
+      .then((userPlants) => {
+        const userPlantsExtraPromises = userPlants.map((userPlant) => {
+          const userPlantId = userPlant.plant_id;
+          return getPlantByPlantId(userPlantId)
+            .then((data) => {
+              return {
+                ...userPlant,
+                plantDetails: data,
+              };
+            })
+            .catch((err) => {
+              console.error(`Error fetching plant data for plant_id ${userPlantId}:`, err);
+              return userPlant;
+            });
+        });
+
+        return Promise.all(userPlantsExtraPromises);
+      })
+      .then((userPlantsExtra) => {
+        const sortedPlants = sortPlantsByThirst(userPlantsExtra);
+        setUserGardenList(sortedPlants);
+        setFullData(sortedPlants);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching user garden or resolving plant data:", err.message || err);
+        setError(err);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -60,7 +81,7 @@ export default function GardenPlantList() {
     if (user) {
       fetchUserGardenList(user);
     }
-  }, [user]);
+  }, [user, isFocused]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -85,7 +106,7 @@ export default function GardenPlantList() {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginTop: 200 }}>
-        <ActivityIndicator size={"large"} color="#5500dc" />
+        <ActivityIndicator size={"large"} color="#78A55A" />
       </View>
     );
   }
@@ -98,53 +119,67 @@ export default function GardenPlantList() {
     );
   }
 
-  // let [fontsLoaded] = useFonts({
-  //   Coustard_400Regular,
-  //   Coustard_900Black,
-  // });
-  // const fontsLoaded = useCustomFonts();
-
-  // if (!fontsLoaded) {
-  //   return <View></View>;
-  // } else {
   return (
-    <View style={{ height: "100%" }}>
+    <View style={{ height: "100%", alignItems: "center" }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",
           fontSize: 26,
-          fontWeight: 600,
           marginTop: 30,
           color: "#78A55A",
-          marginLeft: 30,
+          marginBottom: 20,
+          textAlign: "center",
         }}>
-        Your Garden:
+        Your Garden
       </Text>
 
-      <TextInput
-        placeholder="Search Plants..."
-        clearButtonMode="always"
+      <View
         style={{
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          borderColor: "grey",
-          borderWidth: 1,
-          borderRadius: 8,
-          width: 300,
-          marginLeft: 34,
-          backgroundColor: "#f6ddcc",
+          display: "flex",
+          flexDirection: "row",
+          height: 40,
+          backgroundColor: "rgba(120, 165, 90, 0.5)",
+          width: 330,
+          marginHorizontal: "auto",
+          marginTop: 10,
+          color: "#314C1C",
+          fontWeight: 600,
+          borderRadius: 20,
+          alignItems: "center",
+        }}>
+        <FontAwesome5
+          name="search"
+          size={22}
+          color="#314C1C"
+          style={{ position: "absolute", left: 10 }}
+        />
+        <TextInput
+          style={{ height: "100%", width: "100%", paddingLeft: 40 }}
+          placeholderTextColor="#314C1C"
+          placeholder="Search for plants in your garden..."
+          clearButtonMode="always"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={searchQuery}
+          onChangeText={(query) => handleSearch(query)}
+        />
+      </View>
+      <ScrollView
+        style={{
+          width: "100%",
+          marginHorizontal: "auto",
+          marginVertical: 8,
         }}
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={searchQuery}
-        onChangeText={(query) => handleSearch(query)}
-      />
-      <ScrollView style={{ height: 200, width: "auto", marginVertical: 8 }}>
+        contentContainerStyle={{
+          alignItems: "center",
+          paddingBottom: 120,
+        }}>
         {userGardenList.map((userGarden) => (
           <GardenPlantCard
             key={userGarden._id}
             userGarden={userGarden}
             plantDetails={userGarden.plantDetails}
+            plantId={userGarden.garden_plant_id}
           />
         ))}
       </ScrollView>
@@ -155,16 +190,20 @@ export default function GardenPlantList() {
           })
         }
         style={{
-          display: "flex",
-          backgroundColor: "#f6ddcc",
-          width: 110,
-          padding: 10,
+          backgroundColor: "#78A55A",
+          paddingHorizontal: 20,
+          paddingVertical: 10,
           alignItems: "center",
-          marginLeft: 250,
-          borderRadius: 10,
-          marginTop: 30,
+          alignSelf: "center",
+          borderRadius: 20,
+          marginTop: -100,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 5,
+          elevation: 5,
         }}>
-        <Text style={{ fontSize: 16, color: "#314C1C" }}>Find Plants</Text>
+        <Text style={{ fontSize: 16, color: "#FFFFFF", fontWeight: "bold" }}>Find Plants</Text>
       </Pressable>
     </View>
   );

@@ -1,9 +1,9 @@
 import { Image, Text, View } from "react-native";
-
 import { getSunlightIcon } from "./utils/getSunlightIcon";
 import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 import { getCycleIcon } from "./utils/getCycleIcon";
 import AddBudBtn from "./AddBudBtn";
+import capitaliseWords from "./utils/capitaliseWords";
 
 export default function BudCard(props) {
   const { plantData } = props;
@@ -44,11 +44,14 @@ export default function BudCard(props) {
       </View>
 
       <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
-        <Text style={{ marginBottom: 1 }}>
-          <Text style={{ fontWeight: 600 }}>{plantData.common_name}</Text>
+        <Text style={{ marginBottom: 1, fontWeight: "600" }} numberOfLines={1} ellipsizeMode="tail">
+          {capitaliseWords(plantData.common_name)}
         </Text>
-        <Text style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}>
-          {plantData.scientific_name[0]}
+        <Text
+          style={{ fontSize: 10, fontStyle: "italic", textAlign: "left" }}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {capitaliseWords(plantData.scientific_name[0])}
         </Text>
 
         <View
@@ -61,17 +64,12 @@ export default function BudCard(props) {
           }}>
           <View style={{ alignItems: "center", flex: 1 }}>
             {getSunlightIcon(plantData.sunlight[0])}
-            <Text style={{ fontSize: 10 }}>Sunlight</Text>
           </View>
 
-          <View style={{ alignItems: "center", flex: 1 }}>
-            {getCycleIcon(plantData.cycle)}
-            <Text style={{ fontSize: 10 }}>Cycle</Text>
-          </View>
+          <View style={{ alignItems: "center", flex: 1 }}>{getCycleIcon(plantData.cycle)}</View>
 
           <View style={{ alignItems: "center", flex: 1 }}>
             {getWaterFrequencyIcon(plantData.watering_frequency_in_days)}
-            <Text style={{ fontSize: 10 }}>Watering</Text>
           </View>
         </View>
       </View>

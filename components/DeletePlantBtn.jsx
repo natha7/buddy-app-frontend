@@ -1,33 +1,21 @@
-import { Modal, Pressable, StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { postBudToUserGarden } from "../app/utils/api";
 import { useState } from "react";
+import { Text, Pressable, Modal, StyleSheet, View, ActivityIndicator } from "react-native";
 import capitaliseWords from "./utils/capitaliseWords";
+import { deletePlantByUserIdAndPlantId } from "../app/utils/api";
+import { useRouter } from "expo-router";
 
-export default function AddBudBtn(props) {
-  const { plantInfo } = props;
+export default function DeletePlantBtn(props) {
+  const { userAndPlantId, plantInfo } = props;
+  const { user, gardenPlantId } = userAndPlantId;
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isPosting, setIsPosting] = useState(false);
+  const router = useRouter();
 
-  function addPlantToUserGarden() {
-    setIsPosting(() => {
-      return true;
+  function removePlantFromGarden() {
+    deletePlantByUserIdAndPlantId(user, gardenPlantId).then(() => {
+      hideModal();
+      router.push("garden");
     });
-    postBudToUserGarden(1, {
-      common_name: plantInfo.common_name,
-      plant_id: plantInfo.plant_id,
-    })
-      .then(() => {
-        setIsPosting(() => {
-          return false;
-        });
-        hideModal();
-      })
-      .catch((err) => {
-        setIsPosting(() => {
-          return false;
-        });
-      });
   }
 
   function hideModal() {
@@ -41,51 +29,28 @@ export default function AddBudBtn(props) {
       return true;
     });
   }
+
   return (
     <Pressable
-      style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 15 }}
+      style={{ height: 40, width: 40, borderRadius: 20, backgroundColor: "red" }}
       onPress={showModal}>
-      <View
-        style={{
-          height: "80%",
-          width: 1.5,
-          backgroundColor: "#314C1C",
-          marginRight: 10,
-          opacity: 0.3,
-        }}
-      />
-      <View style={{ marginVertical: "auto" }}>
-        <AntDesign name="plus" size={24} color="#314C1C" />
-        <Text style={{ color: "#314C1C", fontWeight: 600 }}>Add</Text>
-      </View>
-
+      <Text style={{ margin: "auto" }}>Delete Plant</Text>
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <Pressable style={styles.modalBg} onPress={hideModal}>
-          {isPosting ? (
-            <View style={styles.modalLoader}>
-              <ActivityIndicator size="large" color="#78A55A" />
-            </View>
-          ) : null}
+          <View style={styles.modalLoader}>
+            <ActivityIndicator size="large" color="#78A55A" />
+          </View>
         </Pressable>
         <View style={styles.modalBox}>
-          <Image
-            source={{ uri: plantInfo.img_url }}
-            style={{
-              height: "35%",
-              width: "35%",
-              borderRadius: 10,
-              borderColor: "#314C1C",
-              borderWidth: 1,
-            }}
-          />
-          <Text style={styles.modalText}>{`Would you like to add ${capitaliseWords(
-            plantInfo.common_name
-          )} to your garden?`}</Text>
+          <Text
+            style={
+              styles.modalText
+            }>{`Are you sure you'd like to remove ${plantInfo.nickname} from your garden?`}</Text>
           <View style={styles.modalBtnContainer}>
-            <Pressable style={styles.modalBtn} onPress={addPlantToUserGarden} disabled={isPosting}>
+            <Pressable style={styles.modalBtn} onPress={removePlantFromGarden}>
               <Text style={styles.modalBtnText}>Yes</Text>
             </Pressable>
-            <Pressable style={styles.modalBtn} onPress={hideModal} disabled={isPosting}>
+            <Pressable style={styles.modalBtn} onPress={hideModal}>
               <Text style={styles.modalBtnText}>No</Text>
             </Pressable>
           </View>

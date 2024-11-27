@@ -3,11 +3,15 @@ import { useLinkBuilder } from "@react-navigation/native";
 import { Text, PlatformPressable } from "@react-navigation/elements";
 import { Ionicons } from "@expo/vector-icons";
 
+<Ionicons name="flower-sharp" size={24} color="black" />;
+<Ionicons name="camera-sharp" size={24} color="black" />;
+
 function TabBar({ state, descriptors, navigation }) {
   const { buildHref } = useLinkBuilder();
 
   const icons = {
-    index: (props) => <Ionicons name="home" size={28} color={props.color} />,
+    // index: (props) => <Ionicons name="flower-sharp" size={28} color={props.color} />,
+    index: (props) => <Ionicons name="camera-sharp" size={28} color={props.color} />,
     calendar: (props) => <Ionicons size={28} name="calendar" color={props.color} />,
     garden: (props) => <Ionicons size={28} name="leaf" color={props.color} />,
     finder: (props) => <Ionicons name="search" size={28} color={props.color} />,
@@ -15,11 +19,12 @@ function TabBar({ state, descriptors, navigation }) {
 
   const primaryColour = "#314C1C";
   const lightGreenColour = "#78A55A";
-  //const greyColour = "#808080";
 
   return (
     <View style={styles.bar}>
       {state.routes.map((route, index) => {
+        if (route.name === "(plants)") return;
+
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -81,6 +86,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderCurve: "circular",
     width: "auto",
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   barItem: {
     flex: 1,
