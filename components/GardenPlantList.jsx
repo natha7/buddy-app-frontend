@@ -49,7 +49,7 @@ export default function GardenPlantList() {
         const userPlantsExtraPromises = userPlants.map((userPlant) => {
           const userPlantId = userPlant.plant_id;
           return getPlantByPlantId(userPlantId)
-            .then(({ data }) => {
+            .then((data) => {
               return {
                 ...userPlant,
                 plantDetails: data,
@@ -65,7 +65,6 @@ export default function GardenPlantList() {
       })
       .then((userPlantsExtra) => {
         const sortedPlants = sortPlantsByThirst(userPlantsExtra);
-        console.log("oh", sortedPlants);
         setUserGardenList(sortedPlants);
         setFullData(sortedPlants);
         setIsLoading(false);
