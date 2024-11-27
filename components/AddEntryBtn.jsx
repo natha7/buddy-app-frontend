@@ -45,15 +45,22 @@ export default function AddEntryBtn(props) {
   return (
     <Pressable
       style={{
-        height: 60,
-        width: 120,
         borderRadius: 20,
-        backgroundColor: "#ffeb99",
-        borderWidth: 2,
-        borderColor: "#ffe066",
+        backgroundColor: "#f2e3bf",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        alignItems: "center",
+        alignSelf: "center",
+        borderRadius: 15,
+        paddingHorizontal: 35,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
       }}
       onPress={showModal}>
-      <Text style={{ margin: "auto" }}>Add Entry</Text>
+      <Text style={{ fontSize: 16, color: "#314C1C", fontWeight: "bold" }}>Add Entry</Text>
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <Pressable style={styles.modalBg} onPress={hideModal}>
           <View style={styles.modalLoader}>

@@ -67,9 +67,10 @@ export default function Homepage() {
           fontWeight: 600,
           marginTop: 30,
           color: "#78A55A",
-          marginLeft: 30,
+          textAlign: "center",
+          marginBottom: 20,
         }}>
-        Identify Buddy
+        Identify Bud
       </Text>
       <ScrollView style={{ height: 200, width: "auto", marginVertical: 8, padding: 16 }}>
         <Pressable style={styles.button} onPress={pickImageAndIdentifyPlant}>
@@ -121,13 +122,15 @@ export default function Homepage() {
                       )}
                     </View>
 
-                    <View
-                   style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
-                      <Text style={{
-              marginBottom: 1,
-              fontWeight: "600",
-              fontSize: 14,
-            }}>Name: {suggestion.name}</Text>
+                    <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
+                      <Text
+                        style={{
+                          marginBottom: 1,
+                          fontWeight: "600",
+                          fontSize: 14,
+                        }}>
+                        Name: {suggestion.name}
+                      </Text>
                       <Text>Confidence: {Math.round(suggestion.probability * 100)}%</Text>
                     </View>
                   </View>
