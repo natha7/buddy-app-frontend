@@ -84,7 +84,6 @@ export default function AddEntryBtn(props) {
                   <Ionicons name="close" size={24} />
                 </Pressable>
               </View>
-
               <TextInput
                 onChangeText={(text) => {
                   setInputs(() => {
@@ -161,7 +160,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 330,
     width: 330,
-    margin: "auto",
+    marginHorizontal: "auto",
+    marginTop: 50,
     zIndex: 100,
   },
   modalText: {

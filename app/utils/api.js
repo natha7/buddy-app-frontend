@@ -7,7 +7,7 @@ const instance = axios.create({
 export function getUserGardenByUserId(user_id) {
   return instance
     .get(`/user_gardens/${user_id}`)
-    .then(({data}) => {
+    .then(({ data }) => {
       return data.userGarden.user_plants;
     })
     .catch((error) => {
@@ -34,8 +34,8 @@ export function waterGardenPlant(user_id, garden_plant_id) {
 export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
   return instance
     .get(`/user_gardens/${user_id}/plants/${garden_plant_id}`)
-    .then(({data}) => {
-      return data.plant; 
+    .then(({ data }) => {
+      return data.plant;
     })
     .catch((err) => {
       return err;
@@ -52,12 +52,19 @@ export function deletePlantByUserIdAndPlantId(userId, plantId) {
   return instance.delete(`/user_garden/${userId}/plants/${plantId}`);
 }
 
-
 export function postJournalEntryByUserAndPlantId(userId, plantId, journalEntry) {
   return instance
     .post(`/user_garden/${userId}/plants/${plantId}/journal`, journalEntry)
     .then((res) => {
       return res.data.new_entry;
+    });
+}
+
+export function changeGardenPlantNickname(userId, plantId, newName) {
+  return instance
+    .patch(`/user_garden/${userId}/plants/${plantId}`, { nickname: newName })
+    .then((res) => {
+      return res.data.updatedPlant;
     });
 }
 
@@ -68,12 +75,12 @@ export async function IdentifyPlant(base64Image, apiKey, options = {}) {
   });
 
   const body = {
-    images: [base64Image], 
-    similar_images: true,  
+    images: [base64Image],
+    similar_images: true,
     classification_level: "all",
     latitude: 49.207,
-    longitude: 16.608, 
-    ...options, 
+    longitude: 16.608,
+    ...options,
   };
 
   const requestOptions = {
@@ -89,7 +96,6 @@ export async function IdentifyPlant(base64Image, apiKey, options = {}) {
     return data;
   } catch (error) {
     console.error("Error identifying plant:", error);
-    throw error;
+    return error;
   }
 }
-

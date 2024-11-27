@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import formatDate from "../app/utils/dateFormatter";
 
 export default function JournalEntryCard(props) {
   const { entry } = props;
@@ -31,7 +32,7 @@ export default function JournalEntryCard(props) {
             marginRight: 10,
             opacity: "70%",
           }}>
-          Date: {entry.date}
+          Date: {formatDate(entry.date, "journal")}
         </Text>
       </View>
       <View style={{ marginHorizontal: 25, paddingBottom: 20, marginTop: -20 }}>

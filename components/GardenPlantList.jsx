@@ -1,10 +1,8 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { UserContext } from "@/contexts/UserContext.jsx";
 import { getPlantByPlantId, getUserGardenByUserId } from "@/app/utils/api.js";
 import { useIsFocused, useRoute } from "@react-navigation/native";
-import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -16,10 +14,16 @@ export default function GardenPlantList() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [fullData, setFullData] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
   const user = userUser();
+
+  function toggleEditMode() {
+    setIsEditMode((curr) => {
+      return !curr;
+    });
+  }
 
   const calculateThirstPercentage = (lastWateredDate, wateringFrequency) => {
     const currentDate = new Date();
@@ -164,11 +168,19 @@ export default function GardenPlantList() {
           onChangeText={(query) => handleSearch(query)}
         />
       </View>
+      <View style={{ marginTop: 5, width: 330 }}>
+        <Pressable
+          style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}
+          onPress={toggleEditMode}>
+          <Text>{isEditMode ? "Finish editing" : "Edit"}</Text>
+          <FontAwesome5 name="pencil-alt" size={16} color="black" style={{ marginLeft: 5 }} />
+        </Pressable>
+      </View>
       <ScrollView
         style={{
           width: "100%",
           marginHorizontal: "auto",
-          marginVertical: 8,
+          marginBottom: 8,
         }}
         contentContainerStyle={{
           alignItems: "center",
@@ -180,6 +192,7 @@ export default function GardenPlantList() {
             userGarden={userGarden}
             plantDetails={userGarden.plantDetails}
             plantId={userGarden.garden_plant_id}
+            isEditMode={isEditMode}
           />
         ))}
       </ScrollView>
