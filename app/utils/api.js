@@ -52,6 +52,15 @@ export function deletePlantByUserIdAndPlantId(userId, plantId) {
   return instance.delete(`/user_garden/${userId}/plants/${plantId}`);
 }
 
+
+export function postJournalEntryByUserAndPlantId(userId, plantId, journalEntry) {
+  return instance
+    .post(`/user_garden/${userId}/plants/${plantId}/journal`, journalEntry)
+    .then((res) => {
+      return res.data.new_entry;
+    });
+}
+
 export async function IdentifyPlant(base64Image, apiKey, options = {}) {
   const headers = new Headers({
     "Api-Key": apiKey,
@@ -83,3 +92,4 @@ export async function IdentifyPlant(base64Image, apiKey, options = {}) {
     throw error;
   }
 }
+

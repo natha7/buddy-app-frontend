@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import JournalEntryCard from "./JournalEntryCard";
 import AddEntryBtn from "./AddEntryBtn";
 import DeletePlantBtn from "./DeletePlantBtn";
-import BackBtn from "./BackBtn";
+import useUser from "../hooks/useUser";
 
 export default function JournalSection(props) {
   const { gardenPlant } = props;
-  const entries = gardenPlant.journal_entries;
+  const gardenPlantId = gardenPlant.garden_plant_id;
+  const [entries, setEntries] = useState(gardenPlant.journal_entries);
   const [journalEntries, setJournalEntries] = useState([]);
+  const userId = useUser();
 
   useEffect(() => {
     if (entries.length === 0) {
@@ -52,8 +54,8 @@ export default function JournalSection(props) {
         )}
       </ScrollView>
       <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
-        <BackBtn />
-        <AddEntryBtn />
+        <DeletePlantBtn userAndPlantId={{ userId, gardenPlantId }} plantInfo={gardenPlant} />
+        <AddEntryBtn plantId={gardenPlant.garden_plant_id} setEntries={setEntries} />
       </View>
     </View>
   );
