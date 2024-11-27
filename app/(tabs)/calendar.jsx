@@ -32,7 +32,6 @@ const CalendarWithPlantWatering = () => {
       });
   }, []);
 
-  // Render the event details
   const renderEvent = ({ item }) => (
     <View style={styles.eventItem}>
       <Text style={styles.eventText}>🌱 {capitaliseWords(item.nickname)}</Text>

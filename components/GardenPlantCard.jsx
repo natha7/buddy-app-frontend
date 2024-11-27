@@ -22,9 +22,8 @@ export default function GardenPlantCard(props) {
     return Math.min((elapsedDays / validWateringFrequency) * 100, 100);
   });
 
-  // Callback function to update thirst level after watering
   const handleWateringComplete = () => {
-    setThirstPercentage(0); // Reset thirst to 0% after watering
+    setThirstPercentage(0);
   };
 
   const handlePress = () => {

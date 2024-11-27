@@ -18,6 +18,28 @@ export default function GardenPlantList() {
   const route = useRoute();
   const { user } = useContext(UserContext);
 
+  const calculateThirstPercentage = (lastWateredDate, wateringFrequency) => {
+    const currentDate = new Date();
+    const lastWatered = new Date(lastWateredDate);
+    const daysElapsed = Math.floor((currentDate - lastWatered) / (1000 * 60 * 60 * 24)); // calculate days passed
+    const thirstPercentage = Math.min((daysElapsed / wateringFrequency) * 100, 100); // calculate percentage
+    return thirstPercentage;
+  };
+
+  // Sort plants by thirstiness
+  const sortPlantsByThirst = (userPlants) => {
+    return userPlants
+      .map((plant) => {
+        // Add thirst percentage to each plant object
+        const thirstPercentage = calculateThirstPercentage(
+          plant.last_watered,
+          plant.watering_frequency_in_days || 7
+        );
+        return { ...plant, thirstPercentage };
+      })
+      .sort((a, b) => b.thirstPercentage - a.thirstPercentage); // Sort by thirst percentage (descending)
+  };
+
   const fetchUserGardenList = (user) => {
     getUserGardenByUserId(user)
       .then((userPlants) => {
@@ -39,8 +61,10 @@ export default function GardenPlantList() {
         return Promise.all(userPlantsExtraPromises);
       })
       .then((userPlantsExtra) => {
-        setUserGardenList(userPlantsExtra);
-        setFullData(userPlantsExtra);
+        const sortedPlants = sortPlantsByThirst(userPlantsExtra);
+        console.log("oh", sortedPlants);
+        setUserGardenList(sortedPlants);
+        setFullData(sortedPlants);
         setIsLoading(false);
       })
       .catch((err) => {
