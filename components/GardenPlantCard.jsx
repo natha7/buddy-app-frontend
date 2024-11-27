@@ -1,13 +1,19 @@
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Image, Pressable, TextInput } from "react-native";
 import WaterGardenPlantBtn from "./WaterGardenPlantBtn.jsx";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import capitaliseWords from "./utils/capitaliseWords";
 import ThirstBar from "./ThirstBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { changeGardenPlantNickname } from "@/app/utils/api.js";
+import useUser from "@/hooks/useUser.jsx";
 
 export default function GardenPlantCard(props) {
-  const { userGarden, plantDetails } = props;
   const router = useRouter();
+  const { userGarden, plantDetails, isEditMode } = props;
+  const userId = useUser();
+  const [isNicknameEditable, setIsNicknameEditable] = useState(false);
+  const [nicknameInput, setNicknameInput] = useState(capitaliseWords(userGarden.nickname));
 
   const validWateringFrequency = plantDetails.watering_frequency_in_days || 7;
 
@@ -27,9 +33,35 @@ export default function GardenPlantCard(props) {
   };
 
   const handlePress = () => {
-    const gardenPlantId = userGarden.garden_plant_id;
-    router.push(`/(tabs)/(plants)/${gardenPlantId}`);
+    if (!isEditMode) {
+      const gardenPlantId = userGarden.garden_plant_id;
+      router.push(`/(tabs)/(plants)/${gardenPlantId}`);
+    }
   };
+
+  const toggleEditNickName = () => {
+    setIsNicknameEditable((curr) => {
+      return !curr;
+    });
+  };
+
+  const submitNewName = () => {
+    toggleEditNickName();
+    changeGardenPlantNickname(userId, userGarden.garden_plant_id, nicknameInput).then(
+      (newPlant) => {
+        setNicknameInput(() => {
+          return newPlant.nickname;
+        });
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (!isEditMode)
+      setIsNicknameEditable(() => {
+        return false;
+      });
+  }, [isEditMode]);
 
   return (
     <Pressable onPress={handlePress}>
@@ -70,16 +102,38 @@ export default function GardenPlantCard(props) {
 
         {/* Plant Details Section */}
         <View style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
-          <Text
-            style={{
-              marginBottom: 1,
-              fontWeight: "600",
-              fontSize: 14,
-            }}
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {capitaliseWords(userGarden.nickname)}
-          </Text>
+          {isNicknameEditable && isEditMode ? (
+            <TextInput
+              onChangeText={(currText) => setNicknameInput(currText)}
+              onSubmitEditing={submitNewName}
+              value={nicknameInput}
+              style={{
+                marginBottom: 1,
+                fontWeight: "600",
+                fontSize: 14,
+                backgroundColor: "white",
+                width: "auto",
+                borderWidth: 1,
+                borderColor: "#D3D3D3",
+              }}></TextInput>
+          ) : (
+            <Text
+              onPress={toggleEditNickName}
+              style={{
+                marginBottom: 1,
+                fontWeight: "600",
+                fontSize: 14,
+              }}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {nicknameInput !== capitaliseWords(userGarden.nickname)
+                ? nicknameInput
+                : capitaliseWords(userGarden.nickname)}
+              {isEditMode ? (
+                <FontAwesome5 name="pencil-alt" size={14} color="black" style={{ marginLeft: 5 }} />
+              ) : null}
+            </Text>
+          )}
           <Text
             style={{
               fontSize: 10,
