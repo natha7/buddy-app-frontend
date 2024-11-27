@@ -1,5 +1,4 @@
 import { Text, View, Image, Pressable } from "react-native";
-import { getWaterFrequencyIcon } from "./utils/getWaterFrequencyIcon";
 import WaterGardenPlantBtn from "./WaterGardenPlantBtn.jsx";
 import thirstLevel from "./utils/thirstLevel";
 import { useRouter } from "expo-router";
@@ -10,7 +9,7 @@ export default function GardenPlantCard(props) {
 
   const handlePress = () => {
     const gardenPlantId = userGarden.garden_plant_id;
-    router.push(`/plants/${gardenPlantId}`);
+    router.push(`/(tabs)/(plants)/${gardenPlantId}`);
   };
 
   return (

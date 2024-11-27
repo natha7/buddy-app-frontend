@@ -47,3 +47,9 @@ export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
       throw error;
     });
 }
+
+export function getPlantByPlantId(plantId) {
+  return instance.get(`/plants/${plantId}`).then(({ data }) => {
+    return data;
+  });
+}
