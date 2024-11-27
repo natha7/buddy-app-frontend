@@ -1,4 +1,4 @@
-import { ScrollView, Text, ActivityIndicator, View } from "react-native";
+import { ScrollView, Text, ActivityIndicator, View, Pressable } from "react-native";
 import BudCard from "./BudCard.jsx";
 import SearchInputBar from "./SearchInputBar.jsx";
 import AddYourOwnBtn from "./AddYourOwnBtn.jsx";
@@ -13,36 +13,50 @@ export default function BudList() {
   const [currBudSearch, setCurrBudSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [errorStatus, setErrorStatus] = useState(0);
+  const [morePlants, setMorePlants] = useState(10);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  useEffect(() => {
-    setErrorStatus(() => {
-      return 0;
-    });
-    setIsLoading(() => {
-      return true;
-    });
+  const fetchPlants = () => {
+    setIsLoading(true);
+    setErrorStatus(0);
     getAllPlants(currBudSearch)
       .then((fetchedPlants) => {
-        setPlants(() => {
-          return fetchedPlants;
-        });
-        setIsLoading(() => {
-          return false;
-        });
+        setPlants(fetchedPlants);
+        setIsLoading(false);
       })
       .catch((err) => {
-        setIsLoading(() => {
-          return false;
-        });
+        setIsLoading(false);
         setErrorStatus(err.response.status);
       });
+  };
+
+  useEffect(() => {
+    fetchPlants();
   }, [currBudSearch]);
+
+  const loadMorePlants = () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
+
+    getAllPlants(currBudSearch)
+      .then((fetchedPlants) => {
+        setPlants((prevPlants) => [
+          ...prevPlants,
+          ...fetchedPlants.slice(prevPlants.length, prevPlants.length + 10),
+        ]);
+        setMorePlants((prev) => prev + 10);
+        setLoadingMore(false);
+      })
+      .catch(() => {
+        setLoadingMore(false);
+      });
+  };
 
   if (!fontsLoaded) {
     return <View></View>;
   }
   return (
-    <View style={{ height: "100%", alignItems: "center", marginBottom: 100 }}>
+    <View style={{ height: "100%", alignItems: "center", marginBottom: 42 }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",
@@ -66,7 +80,10 @@ export default function BudList() {
         }}
         contentContainerStyle={{
           alignItems: "center",
-        }}>
+          paddingBottom: 120,
+        }}
+        onEndReached={loadMorePlants}
+        onEndReachedThreshold={0.1}>
         {isLoading ? (
           <View
             style={{
@@ -91,12 +108,35 @@ export default function BudList() {
           </View>
         ) : (
           <View>
-            {plants.map((plant) => {
+            {plants.slice(0, morePlants).map((plant) => {
               return <BudCard key={plant._id} plantData={plant} />;
             })}
           </View>
         )}
       </ScrollView>
+      {morePlants < plants.length && (
+        <Pressable
+          onPress={loadMorePlants}
+          style={{
+            position: "absolute",
+            bottom: 20,
+            backgroundColor: "#78A55A",
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            alignItems: "center",
+            alignSelf: "center",
+            borderRadius: 20,
+            marginTop: -100,
+            marginBottom: 24,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 5,
+            elevation: 5,
+          }}>
+          <Text style={{ fontSize: 16, color: "#FFFFFF", fontWeight: "bold" }}>More Plants</Text>
+        </Pressable>
+      )}
       {/* <AddYourOwnBtn /> */}
     </View>
   );
