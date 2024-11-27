@@ -40,30 +40,39 @@ export default function SingleGardenPlantById() {
   const fontsLoaded = useCustomFonts();
 
   return (
-    <View>
+    <View style={{ flex: 1, padding: 20 }}>
       {isLoading ? (
         <View
           style={{
-            minHeight: "100%",
-            minWidth: "100%",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
           }}>
-          <View style={{ margin: "auto" }}>
-            <ActivityIndicator size="large" color="#78A55A" />
-            <Text>Loading plant...</Text>
-          </View>
+          <ActivityIndicator size="large" color="#78A55A" />
+          <Text style={{ marginTop: 10 }}>Loading plant...</Text>
         </View>
       ) : (
-        <View>
+        <View style={{ flex: 1 }}>
           <View
             style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
+              alignItems: "center",
+              marginVertical: 20,
             }}>
-            <BackBtn />
-            <Text style={styles.title}>{gardenPlant?.nickname}'s Details</Text>
+            <View style={{ alignSelf: "flex-start" }}>
+              <BackBtn />
+            </View>
+            <Text
+              style={{
+                fontFamily: "Coustard_900Black",
+                fontSize: 26,
+                color: "#78A55A",
+                marginTop: 10,
+                textAlign: "center",
+              }}>
+              {gardenPlant?.nickname}'s Details
+            </Text>
           </View>
+
           <View
             style={{
               display: "flex",
@@ -71,62 +80,63 @@ export default function SingleGardenPlantById() {
               justifyContent: "space-between",
               backgroundColor: "#78A55A33",
               borderRadius: 20,
-              height: 100,
+              height: 120,
               width: 330,
               margin: "auto",
+              marginTop: 8,
             }}>
-            <Image
-              source={{ uri: generalInfo.default_image }}
+            <View
               style={{
-                height: 80,
-                width: 80,
-                borderRadius: 20,
-                marginVertical: "auto",
-                marginLeft: 10,
-              }}
-            />
-            <Text>Nickname: {gardenPlant.nickname}</Text>
-            <Text>Thirst:</Text>
+                height: 75,
+                width: 75,
+                alignSelf: "center",
+                marginLeft: 16,
+                borderRadius: 10,
+                backgroundColor: "grey",
+              }}>
+              <Image
+                source={{ uri: generalInfo.default_image }}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  alignSelf: "center",
+                  borderRadius: 10,
+                  borderColor: "#314C1C",
+                  borderWidth: 1,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                marginVertical: 30,
+                flex: 1,
+                marginLeft: 12,
+              }}>
+              <Text
+                style={{
+                  marginBottom: 5,
+                  fontSize: 14,
+                }}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                Nickname: <Text style={{ fontWeight: "600" }}>{gardenPlant.nickname}</Text>
+              </Text>
+              <Text style={{ fontSize: 10 }}>
+                Thirst: <Text style={{ fontWeight: "600" }}>{/* Add thirst data here */}</Text>
+              </Text>
+            </View>
           </View>
-          {Object.keys(gardenPlant).length > 0 ? (
-            <JournalSection gardenPlant={gardenPlant} />
-          ) : null}
+
+          {Object.keys(gardenPlant).length > 0 && (
+            <View style={{ flex: 1 }}>
+              <JournalSection gardenPlant={gardenPlant} />
+            </View>
+          )}
         </View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 20,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 20,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    marginTop: 30,
-
-    fontFamily: "Coustard_900Black",
-    color: "#78A55A",
-  },
-  detailsCard: {
-    backgroundColor: "#78A55A33",
-    padding: 20,
-    borderRadius: 20,
-    width: 300,
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 10,
-    fontFamily: "Coustard_400Regular",
-  },
-});

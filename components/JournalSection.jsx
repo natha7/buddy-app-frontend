@@ -29,13 +29,28 @@ export default function JournalSection(props) {
   }, [entries]);
 
   return (
-    <View style={{ height: 400, width: "auto" }}>
-      <Text>Journal:</Text>
-      <ScrollView>
+    <View
+      style={{
+        flex: 1,
+        width: "auto",
+        marginTop: 20,
+        display: "flex",
+        flexDirection: "column",
+      }}>
+      <Text
+        style={{
+          fontFamily: "Coustard_900Black",
+          fontSize: 18,
+          color: "#78A55A",
+          marginTop: 10,
+          marginLeft: 30,
+          textAlign: "left",
+        }}>
+        Journal:
+      </Text>
+      <ScrollView style={{ flex: 1 }}>
         {journalEntries.length > 0 ? (
-          journalEntries.map((entry) => {
-            return <JournalEntryCard key={entry._id} entry={entry} />;
-          })
+          journalEntries.map((entry) => <JournalEntryCard key={entry._id} entry={entry} />)
         ) : (
           <View
             style={{
@@ -53,7 +68,15 @@ export default function JournalSection(props) {
           </View>
         )}
       </ScrollView>
-      <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginHorizontal: 9,
+          marginTop: -100,
+          paddingHorizontal: 20,
+        }}>
         <DeletePlantBtn userAndPlantId={{ userId, gardenPlantId }} plantInfo={gardenPlant} />
         <AddEntryBtn plantId={gardenPlant.garden_plant_id} setEntries={setEntries} />
       </View>

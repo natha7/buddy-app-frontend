@@ -33,14 +33,20 @@ export default function DeletePlantBtn(props) {
   return (
     <Pressable
       style={{
-        height: 60,
-        width: 120,
-        borderRadius: 20,
         backgroundColor: "#FAA0A0",
-        borderWidth: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        alignItems: "center",
+        alignSelf: "center",
+        borderRadius: 15,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
       }}
       onPress={showModal}>
-      <Text style={{ margin: "auto" }}>Delete Plant</Text>
+      <Text style={{ fontSize: 16, color: "#FFFFFF", fontWeight: 600 }}>Delete Plant</Text>
       <Modal visible={isModalVisible} transparent={true} animationType="fade">
         <Pressable style={styles.modalBg} onPress={hideModal}>
           <View style={styles.modalLoader}>
