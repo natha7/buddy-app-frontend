@@ -89,37 +89,46 @@ export default function Homepage() {
             <View>
               {getTopSuggestions().length > 0 ? (
                 getTopSuggestions().map((suggestion, index) => (
-                  <View key={index}  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    backgroundColor: "#78A55A33",
-                    borderRadius: 20,
-                    height: 120,
-                    width: 330,
-                    margin: "auto",
-                    marginTop: 10,
-                  }}>
+                  <View
+                    key={index}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      backgroundColor: "#78A55A33",
+                      borderRadius: 20,
+                      height: 120,
+                      width: 330,
+                      margin: "auto",
+                      marginTop: 10,
+                    }}>
                     <View
                       style={{
                         marginLeft: 8,
                         alignSelf: "center",
                       }}>
-                      {suggestion.similar_images?.length > 0 && (
+                      {suggestion.similar_images?.length > 0 ? (
                         <Image
                           source={{ uri: suggestion.similar_images[0].url }}
+                          style={{ width: 100, height: 100, borderRadius: 8 }}
+                        />
+                      ) : (
+                        <Image
+                          source={{
+                            uri: "https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                          }}
                           style={{ width: 100, height: 100, borderRadius: 8 }}
                         />
                       )}
                     </View>
 
                     <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-around",
-                      }}>
-                      <Text>Name: {suggestion.name}</Text>
+                   style={{ marginVertical: "auto", flex: 1, marginLeft: 12 }}>
+                      <Text style={{
+              marginBottom: 1,
+              fontWeight: "600",
+              fontSize: 14,
+            }}>Name: {suggestion.name}</Text>
                       <Text>Confidence: {Math.round(suggestion.probability * 100)}%</Text>
                     </View>
                   </View>
