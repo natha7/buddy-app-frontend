@@ -7,9 +7,8 @@ const instance = axios.create({
 export function getUserGardenByUserId(user_id) {
   return instance
     .get(`/user_gardens/${user_id}`)
-    .then((response) => {
-      console.log(response.data.userGarden.user_plants);
-      return response.data.userGarden.user_plants;
+    .then(({data}) => {
+      return data.userGarden.user_plants;
     })
     .catch((error) => {
       throw error;
@@ -32,18 +31,12 @@ export function waterGardenPlant(user_id, garden_plant_id) {
 }
 
 export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
-  if (!user_id || !garden_plant_id) {
-    return Promise.reject(new Error("Invalid user_id or garden_plant_id provided"));
-  }
-
   return instance
     .get(`/user_gardens/${user_id}/plants/${garden_plant_id}`)
-    .then((response) => {
-      return response.data.plant; // Return the 'plant' object directly
+    .then(({data}) => {
+      return data.plant; 
     })
     .catch((error) => {
-      console.error("Error fetching plant data:", error.response?.data || error.message);
-      // Re-throw the error to handle it in the caller
       throw error;
     });
 }
