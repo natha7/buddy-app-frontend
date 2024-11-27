@@ -6,7 +6,7 @@ import ThirstBar from "./ThirstBar";
 import { useState } from "react";
 
 export default function GardenPlantCard(props) {
-  const { userGarden, plantDetails, plantId } = props;
+  const { userGarden, plantDetails } = props;
   const router = useRouter();
 
   const validWateringFrequency = plantDetails.watering_frequency_in_days || 7;
@@ -27,10 +27,8 @@ export default function GardenPlantCard(props) {
   };
 
   const handlePress = () => {
-    router.push({
-      pathname: `/plants`,
-      params: plantId,
-    });
+    const gardenPlantId = userGarden.garden_plant_id;
+    router.push(`/(tabs)/(plants)/${gardenPlantId}`);
   };
 
   return (

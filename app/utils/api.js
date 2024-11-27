@@ -7,9 +7,8 @@ const instance = axios.create({
 export function getUserGardenByUserId(user_id) {
   return instance
     .get(`/user_gardens/${user_id}`)
-    .then((response) => {
-      console.log(response.data.userGarden.user_plants);
-      return response.data.userGarden.user_plants;
+    .then(({data}) => {
+      return data.userGarden.user_plants;
     })
     .catch((error) => {
       throw error;
@@ -35,16 +34,20 @@ export function waterGardenPlant(user_id, garden_plant_id) {
 export function getUserGardenPlantByUserIdAndPlantId(user_id, garden_plant_id) {
   return instance
     .get(`/user_gardens/${user_id}/plants/${garden_plant_id}`)
-    .then(({ data }) => {
-      return data.plant;
+    .then(({data}) => {
+      return data.plant; 
     })
-    .catch((err) => {
-      return err;
+    .catch((error) => {
+      throw error;
     });
 }
 
-export function getPlantByPlantId(plant_id) {
-  return instance.get(`/plants/${plant_id}`).then((plantResponse) => {
-    return plantResponse;
+export function getPlantByPlantId(plantId) {
+  return instance.get(`/plants/${plantId}`).then(({ data }) => {
+    return data;
   });
+}
+
+export function deletePlantByUserIdAndPlantId(userId, plantId) {
+  return instance.delete(`/user_garden/${userId}/plants/${plantId}`);
 }

@@ -15,11 +15,12 @@ function TabBar({ state, descriptors, navigation }) {
 
   const primaryColour = "#314C1C";
   const lightGreenColour = "#78A55A";
-  //const greyColour = "#808080";
 
   return (
     <View style={styles.bar}>
       {state.routes.map((route, index) => {
+        if (route.name === "(plants)") return;
+
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
