@@ -20,6 +20,7 @@ export function getAllPlants(searchTerm) {
     return data.plants;
   });
 }
+
 export function postBudToUserGarden(user_id, plantToSend) {
   return instance.post(`user_garden/${user_id}/plants`, plantToSend);
 }
