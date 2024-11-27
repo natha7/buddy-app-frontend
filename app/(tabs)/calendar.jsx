@@ -6,6 +6,7 @@ import formatDate from "../utils/dateFormatter";
 import { useCustomFonts } from "../../hooks/useCustomFonts";
 import { getUserGardenByUserId } from "../utils/api";
 import useUser from "../../hooks/useUser";
+import capitaliseWords from "../../components/utils/capitaliseWords";
 
 const CalendarWithPlantWatering = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -20,7 +21,7 @@ const CalendarWithPlantWatering = () => {
         setUserPlants(fetchedPlants);
         const dates = fetchedPlants.reduce((acc, plant) => {
           const formattedDate = formatDate(plant.last_watered);
-          acc[formattedDate] = { marked: true, dotColor: "green" };
+          acc[formattedDate] = { marked: true, dotColor: "#314C1C" };
           return acc;
         }, {});
 
@@ -31,10 +32,9 @@ const CalendarWithPlantWatering = () => {
       });
   }, []);
 
-  // Render the event details
   const renderEvent = ({ item }) => (
     <View style={styles.eventItem}>
-      <Text style={styles.eventText}>🌱 {item.nickname}</Text>
+      <Text style={styles.eventText}>🌱 {capitaliseWords(item.nickname)}</Text>
     </View>
   );
 
@@ -50,16 +50,19 @@ const CalendarWithPlantWatering = () => {
       <Calendar
         markedDates={{
           ...markedDates,
-          ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "green" } }),
+          ...(selectedDate && { [selectedDate]: { selected: true, selectedColor: "#314C1C" } }),
         }}
         onDayPress={(day) => {
           setSelectedDate(day.dateString);
         }}
         theme={{
-          todayTextColor: "green",
-          selectedDayBackgroundColor: "green",
+          textMonthFontFamily: "Coustard_400Regular",
+          monthTextColor: "#78A55A",
+          todayTextColor: "#314C1C",
+          dayTextColor: "#78A55A",
+          selectedDayBackgroundColor: "#314C1C",
           dotColor: "blue",
-          arrowColor: "green",
+          arrowColor: "#314C1C",
         }}
       />
       <View style={styles.eventsContainer}>
@@ -120,6 +123,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   eventText: {
+    fontFamily: "Coustard_400Regular",
+    color: "#314C1C",
     fontSize: 16,
   },
   noEventsText: {

@@ -5,7 +5,8 @@ import { useState } from "react";
 import useUser from "../hooks/useUser";
 
 export default function WaterGardenPlantBtn(props) {
-  const { plantDetails, gardenPlantId, nickname } = props;
+  const { plantDetails, gardenPlantId, nickname, onWaterComplete } = props;
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
@@ -17,6 +18,7 @@ export default function WaterGardenPlantBtn(props) {
       .then(() => {
         setIsPosting(false);
         hideModal();
+        if (onWaterComplete) onWaterComplete();
       })
       .catch((err) => {
         setIsPosting(false);
@@ -36,7 +38,15 @@ export default function WaterGardenPlantBtn(props) {
     <Pressable
       style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 15 }}
       onPress={showModal}>
-      <View style={{ height: "80%", width: 1.5, backgroundColor: "#314C1C", marginRight: 10 }} />
+      <View
+        style={{
+          height: "80%",
+          width: 1.5,
+          backgroundColor: "#314C1C",
+          marginRight: 10,
+          opacity: 0.3,
+        }}
+      />
       <View style={{ alignItems: "center" }}>
         <AntDesign name="plus" size={24} color="#314C1C" />
         <Text style={{ color: "#314C1C", fontWeight: "600", marginTop: 4 }}>Water</Text>
