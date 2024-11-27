@@ -1,19 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const ThirstBar = ({ lastWatered, wateringFrequency }) => {
-
-  const validWateringFrequency = wateringFrequency || 7;
-
-  const currentDate = new Date();
-  const lastWateredDate = lastWatered ? new Date(lastWatered) : null;
-
-  const elapsedDays = lastWateredDate
-    ? Math.round((currentDate - lastWateredDate) / (1000 * 60 * 60 * 24))
-    : validWateringFrequency;
-
-  const thirstPercentage = Math.min((elapsedDays / validWateringFrequency) * 100, 100);
-
+const ThirstBar = ({ thirstPercentage }) => {
   return (
     <View style={{ alignItems: "center", flex: 1 }}>
       <View

@@ -3,10 +3,29 @@ import WaterGardenPlantBtn from "./WaterGardenPlantBtn.jsx";
 import { useRouter } from "expo-router";
 import capitaliseWords from "./utils/capitaliseWords";
 import ThirstBar from "./ThirstBar";
+import { useState } from "react";
 
 export default function GardenPlantCard(props) {
   const { userGarden, plantDetails, plantId } = props;
   const router = useRouter();
+
+  const validWateringFrequency = plantDetails.watering_frequency_in_days || 7;
+
+  const [thirstPercentage, setThirstPercentage] = useState(() => {
+    const currentDate = new Date();
+    const lastWateredDate = userGarden.last_watered ? new Date(userGarden.last_watered) : null;
+
+    const elapsedDays = lastWateredDate
+      ? Math.round((currentDate - lastWateredDate) / (1000 * 60 * 60 * 24))
+      : validWateringFrequency;
+
+    return Math.min((elapsedDays / validWateringFrequency) * 100, 100);
+  });
+
+  // Callback function to update thirst level after watering
+  const handleWateringComplete = () => {
+    setThirstPercentage(0); // Reset thirst to 0% after watering
+  };
 
   const handlePress = () => {
     router.push({
@@ -83,16 +102,14 @@ export default function GardenPlantCard(props) {
               marginTop: 12,
               alignItems: "center",
             }}>
-            <ThirstBar
-              lastWatered={userGarden.last_watered}
-              wateringFrequency={plantDetails.watering_frequency_in_days}
-            />
+            <ThirstBar thirstPercentage={thirstPercentage} />
           </View>
         </View>
         <WaterGardenPlantBtn
           plantDetails={plantDetails}
           gardenPlantId={userGarden.garden_plant_id}
           nickname={userGarden.nickname}
+          onWaterComplete={handleWateringComplete}
         />
       </View>
     </Pressable>
