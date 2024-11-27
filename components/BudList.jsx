@@ -42,7 +42,7 @@ export default function BudList() {
     return <View></View>;
   }
   return (
-    <View style={{ height: "100%", alignItems: "center" }}>
+    <View style={{ height: "100%", alignItems: "center", marginBottom: 100 }}>
       <Text
         style={{
           fontFamily: "Coustard_900Black",

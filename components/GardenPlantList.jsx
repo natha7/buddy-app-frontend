@@ -2,11 +2,10 @@ import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from 
 import GardenPlantCard from "./GardenPlantCard.jsx";
 import { useCustomFonts } from "../hooks/useCustomFonts";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import userUser from "../hooks/useUser.jsx";
 
 export default function GardenPlantList() {
@@ -87,9 +86,13 @@ export default function GardenPlantList() {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginTop: 200 }}>
-        <ActivityIndicator size={"large"} color="#5500dc" />
+        <ActivityIndicator size={"large"} color="#78A55A" />
       </View>
     );
+  }
+
+  if (!fontsLoaded) {
+    return <View></View>;
   }
 
   if (error) {
@@ -153,6 +156,7 @@ export default function GardenPlantList() {
         }}
         contentContainerStyle={{
           alignItems: "center",
+          paddingBottom: 120,
         }}>
         {userGardenList.map((userGarden) => (
           <GardenPlantCard
@@ -176,8 +180,7 @@ export default function GardenPlantList() {
           alignItems: "center",
           alignSelf: "center",
           borderRadius: 20,
-          marginTop: 30,
-          marginBottom: 30,
+          marginTop: -100,
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.2,
