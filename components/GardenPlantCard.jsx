@@ -5,14 +5,12 @@ import capitaliseWords from "./utils/capitaliseWords";
 import ThirstBar from "./ThirstBar";
 
 export default function GardenPlantCard(props) {
-  const { userGarden, plantDetails, plantId } = props;
+  const { userGarden, plantDetails } = props;
   const router = useRouter();
 
   const handlePress = () => {
-    router.push({
-      pathname: `/plants`,
-      params: plantId,
-    });
+    const gardenPlantId = userGarden.garden_plant_id;
+    router.push(`/(tabs)/(plants)/${gardenPlantId}`);
   };
 
   return (

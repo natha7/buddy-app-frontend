@@ -1,12 +1,13 @@
 import { ScrollView, Text, Pressable, View, TextInput, ActivityIndicator } from "react-native";
 import GardenPlantCard from "./GardenPlantCard.jsx";
+import { useCustomFonts } from "../hooks/useCustomFonts";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState, useContext } from "react";
-import { UserContext } from "@/contexts/UserContext.jsx";
+import userUser from "../hooks/useUser.jsx";
 
 export default function GardenPlantList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,8 +16,9 @@ export default function GardenPlantList() {
   const [error, setError] = useState(null);
   const [fullData, setFullData] = useState([]);
   const navigation = useNavigation();
-  const route = useRoute();
-  const { user } = useContext(UserContext);
+  const fontsLoaded = useCustomFonts();
+
+  const user = userUser();
 
   const fetchUserGardenList = async (user) => {
     try {
@@ -157,6 +159,7 @@ export default function GardenPlantList() {
             key={userGarden._id}
             userGarden={userGarden}
             plantDetails={userGarden.plantDetails}
+            plantId={userGarden.garden_plant_id}
           />
         ))}
       </ScrollView>
