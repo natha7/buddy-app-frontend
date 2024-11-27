@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import formatDate from "../app/utils/dateFormatter";
 
 export default function JournalEntryCard(props) {
   const { entry } = props;
@@ -15,7 +16,7 @@ export default function JournalEntryCard(props) {
         marginTop: 10,
         justifyContent: "space-evenly",
       }}>
-      <Text style={{ alignSelf: "flex-end" }}>{entry.date}</Text>
+      <Text style={{ alignSelf: "flex-end" }}>{formatDate(entry.date, "journal")}</Text>
       <View style={{ marginHorizontal: 10 }}>
         <Text>{entry.text}</Text>
       </View>
