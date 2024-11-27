@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text } from "react-native";
 import { useRouter } from "expo-router";
-n;
 
 export default function BackBtn() {
   const router = useRouter();
