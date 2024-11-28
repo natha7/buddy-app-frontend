@@ -65,8 +65,12 @@ export default function GardenPlantList() {
       })
       .then((userPlantsExtra) => {
         const sortedPlants = sortPlantsByThirst(userPlantsExtra);
-        setUserGardenList(sortedPlants);
-        setFullData(sortedPlants);
+        setUserGardenList(() => {
+          return sortedPlants;
+        });
+        setFullData(() => {
+          return sortedPlants;
+        });
         setIsLoading(false);
       })
       .catch((err) => {

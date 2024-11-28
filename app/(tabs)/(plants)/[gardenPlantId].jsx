@@ -3,7 +3,7 @@ import { useCustomFonts } from "../../../hooks/useCustomFonts";
 import { useEffect, useState } from "react";
 import { getPlantByPlantId, getUserGardenPlantByUserIdAndPlantId } from "../../utils/api";
 import useUser from "../../../hooks/useUser";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import JournalSection from "../../../components/JournalSection";
 import BackBtn from "../../../components/BackBtn";
 
@@ -13,7 +13,6 @@ export default function SingleGardenPlantById() {
   const [gardenPlant, setGardenPlant] = useState({});
   const [generalInfo, setGeneralInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const isFocused = useIsFocused();
   const user = useUser();
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export default function SingleGardenPlantById() {
           return false;
         });
       });
-  }, [gardenPlantId, isFocused]);
+  }, [gardenPlantId, route]);
 
   const fontsLoaded = useCustomFonts();
 
