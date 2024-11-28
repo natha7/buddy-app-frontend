@@ -16,23 +16,15 @@ export default function SingleGardenPlantById() {
   const user = useUser();
 
   useEffect(() => {
-    setIsLoading(() => {
-      return true;
-    });
+    setIsLoading(true);
     getUserGardenPlantByUserIdAndPlantId(user, gardenPlantId)
       .then((res) => {
-        setGardenPlant(() => {
-          return res;
-        });
+        setGardenPlant(res);
         return getPlantByPlantId(res.plant_id);
       })
       .then((fetchedPlant) => {
-        setGeneralInfo(() => {
-          return fetchedPlant;
-        });
-        setIsLoading(() => {
-          return false;
-        });
+        setGeneralInfo(fetchedPlant);
+        setIsLoading(false);
       });
   }, [gardenPlantId, route]);
 
@@ -41,22 +33,13 @@ export default function SingleGardenPlantById() {
   return (
     <View style={{ flex: 1, padding: 20 }}>
       {isLoading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator size="large" color="#78A55A" />
           <Text style={{ marginTop: 10 }}>Loading plant...</Text>
         </View>
       ) : (
         <View style={{ flex: 1 }}>
-          <View
-            style={{
-              alignItems: "center",
-              marginVertical: 20,
-            }}>
+          <View style={{ alignItems: "center", marginVertical: 20 }}>
             <View style={{ alignSelf: "flex-start" }}>
               <BackBtn />
             </View>
@@ -81,7 +64,7 @@ export default function SingleGardenPlantById() {
               borderRadius: 20,
               height: 120,
               width: 330,
-              margin: "auto",
+              alignSelf: "center",
               marginTop: 8,
             }}>
             <View
@@ -107,24 +90,15 @@ export default function SingleGardenPlantById() {
             </View>
             <View
               style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                marginVertical: 30,
                 flex: 1,
                 marginLeft: 12,
+                marginVertical: 30,
               }}>
-              <Text
-                style={{
-                  marginBottom: 5,
-                  fontSize: 14,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
+              <Text style={{ fontSize: 14, marginBottom: 5 }}>
                 Nickname: <Text style={{ fontWeight: "600" }}>{gardenPlant.nickname}</Text>
               </Text>
               <Text style={{ fontSize: 10 }}>
-                Thirst: <Text style={{ fontWeight: "600" }}>{/* Add thirst data here */}</Text>
+                Thirst: <Text style={{ fontWeight: "600" }}>{gardenPlant.thirst || "Unknown"}</Text>
               </Text>
             </View>
           </View>
