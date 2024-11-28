@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://buddy-app-backend.onrender.com/api",
+  baseURL: "http://127.0.0.1:9090/api",
 });
 
 export function getUserGardenByUserId(user_id) {
@@ -22,7 +22,7 @@ export function getAllPlants(searchTerm) {
 }
 
 export function postBudToUserGarden(user_id, plantToSend) {
-  return instance.post(`user_garden/${user_id}/plants`, plantToSend);
+  return instance.post(`/user_garden/${user_id}/plants`, plantToSend);
 }
 
 export function waterGardenPlant(user_id, garden_plant_id) {
