@@ -48,7 +48,11 @@ export default function JournalSection(props) {
         }}>
         Journal:
       </Text>
-      <View style={{ flex: 1 }}>
+      <View
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          paddingBottom: 80,
+        }}>
         {journalEntries.length > 0 ? (
           journalEntries.map((entry) => <JournalEntryCard key={entry._id} entry={entry} />)
         ) : (
@@ -71,11 +75,12 @@ export default function JournalSection(props) {
 
       <View
         style={{
+          position: "absolute",
+          bottom: 20,
+          left: 10,
+          right: 10,
           flexDirection: "row",
           justifyContent: "space-between",
-          marginHorizontal: 9,
-          marginTop: -100,
-          paddingHorizontal: 20,
         }}>
         <DeletePlantBtn userAndPlantId={{ userId, gardenPlantId }} plantInfo={gardenPlant} />
         <AddEntryBtn plantId={gardenPlant.garden_plant_id} setEntries={setEntries} />

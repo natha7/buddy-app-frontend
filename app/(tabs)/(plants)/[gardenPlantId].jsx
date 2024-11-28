@@ -16,23 +16,15 @@ export default function SingleGardenPlantById() {
   const user = useUser();
 
   useEffect(() => {
-    setIsLoading(() => {
-      return true;
-    });
+    setIsLoading(true);
     getUserGardenPlantByUserIdAndPlantId(user, gardenPlantId)
       .then((res) => {
-        setGardenPlant(() => {
-          return res;
-        });
+        setGardenPlant(res);
         return getPlantByPlantId(res.plant_id);
       })
       .then((fetchedPlant) => {
-        setGeneralInfo(() => {
-          return fetchedPlant;
-        });
-        setIsLoading(() => {
-          return false;
-        });
+        setGeneralInfo(fetchedPlant);
+        setIsLoading(false);
       });
   }, [gardenPlantId, route]);
 
@@ -41,22 +33,13 @@ export default function SingleGardenPlantById() {
   return (
     <View style={{ flex: 1, padding: 20 }}>
       {isLoading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator size="large" color="#78A55A" />
           <Text style={{ marginTop: 10 }}>Loading plant...</Text>
         </View>
       ) : (
         <View style={{ flex: 1 }}>
-          <View
-            style={{
-              alignItems: "center",
-              marginVertical: 20,
-            }}>
+          <View style={{ alignItems: "center", marginVertical: 20 }}>
             <View style={{ alignSelf: "flex-start" }}>
               <BackBtn />
             </View>
