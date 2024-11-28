@@ -60,7 +60,6 @@ export default function JournalEntryCard(props) {
             </Text>
           ) : (
             <Text style={{ opacity: 0.6, marginRight: 1 }}>Height: ——</Text>
-            <Text style={{ opacity: 0.6, marginRight: 1 }}>Height: ——</Text>
           )}
         </View>
       </View>

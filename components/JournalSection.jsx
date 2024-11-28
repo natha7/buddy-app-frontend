@@ -29,61 +29,56 @@ export default function JournalSection(props) {
   }, [entries]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: "auto",
-        marginTop: 20,
-        display: "flex",
-        flexDirection: "column",
-      }}>
-      <Text
-        style={{
-          fontFamily: "Coustard_900Black",
-          fontSize: 18,
-          color: "#78A55A",
-          marginTop: 10,
-          marginLeft: 30,
-          textAlign: "left",
-        }}>
-        Journal:
-      </Text>
-      <View
-        style={{ flex: 1 }}
-        contentContainerStyle={{
-          paddingBottom: 80,
-        }}>
-        {journalEntries.length > 0 ? (
-          journalEntries.map((entry) => <JournalEntryCard key={entry._id} entry={entry} />)
-        ) : (
-          <View
-            style={{
-              display: "flex",
-              backgroundColor: "#78A55A33",
-              borderRadius: 20,
-              height: 100,
-              width: 330,
-              margin: "auto",
-              marginTop: 10,
-            }}>
-            <View style={{ margin: "auto" }}>
-              <Text>No journal entries yet.</Text>
-            </View>
-          </View>
-        )}
-      </View>
-
+    <View>
       <View
         style={{
-          position: "absolute",
-          bottom: 20,
-          left: 10,
-          right: 10,
+          marginTop: 20,
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
         }}>
         <DeletePlantBtn userAndPlantId={{ userId, gardenPlantId }} plantInfo={gardenPlant} />
         <AddEntryBtn plantId={gardenPlant.garden_plant_id} setEntries={setEntries} />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          width: "auto",
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "column",
+          paddingBottom: 80,
+        }}>
+        <Text
+          style={{
+            fontFamily: "Coustard_900Black",
+            fontSize: 18,
+            color: "#78A55A",
+            marginTop: 10,
+            marginLeft: 30,
+            textAlign: "left",
+          }}>
+          Journal:
+        </Text>
+        <ScrollView style={{ flex: 1 }}>
+          {journalEntries.length > 0 ? (
+            journalEntries.map((entry) => <JournalEntryCard key={entry._id} entry={entry} />)
+          ) : (
+            <View
+              style={{
+                display: "flex",
+                backgroundColor: "#78A55A33",
+                borderRadius: 20,
+                height: 100,
+                width: 330,
+                margin: "auto",
+                marginTop: 10,
+              }}>
+              <View style={{ margin: "auto" }}>
+                <Text>No journal entries yet.</Text>
+              </View>
+            </View>
+          )}
+        </ScrollView>
       </View>
     </View>
   );
