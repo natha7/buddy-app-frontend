@@ -23,13 +23,14 @@ export default function JournalEntryCard(props) {
           justifyContent: "center",
           borderBottomWidth: 1,
           borderBottomColor: "#314C1C",
-          alignSelf: "center",
+          marginHorizontal: "auto",
           opacity: 0.7,
         }}>
         <Text
           style={{
             alignSelf: "flex-end",
             marginRight: 10,
+            opacity: 0.7,
             opacity: 0.7,
           }}>
           Date: {formatDate(entry.date, "journal")}
@@ -58,6 +59,7 @@ export default function JournalEntryCard(props) {
               Height: <Text style={{ fontWeight: "600" }}>{entry.height_entry_in_cm}cm</Text>
             </Text>
           ) : (
+            <Text style={{ opacity: 0.6, marginRight: 1 }}>Height: ——</Text>
             <Text style={{ opacity: 0.6, marginRight: 1 }}>Height: ——</Text>
           )}
         </View>

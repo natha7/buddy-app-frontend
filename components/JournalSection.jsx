@@ -48,7 +48,7 @@ export default function JournalSection(props) {
         }}>
         Journal:
       </Text>
-      <ScrollView
+      <View
         style={{ flex: 1 }}
         contentContainerStyle={{
           paddingBottom: 80,
@@ -71,7 +71,7 @@ export default function JournalSection(props) {
             </View>
           </View>
         )}
-      </ScrollView>
+      </View>
 
       <View
         style={{
