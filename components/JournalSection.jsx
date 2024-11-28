@@ -48,7 +48,7 @@ export default function JournalSection(props) {
         }}>
         Journal:
       </Text>
-      <ScrollView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         {journalEntries.length > 0 ? (
           journalEntries.map((entry) => <JournalEntryCard key={entry._id} entry={entry} />)
         ) : (
@@ -67,7 +67,7 @@ export default function JournalSection(props) {
             </View>
           </View>
         )}
-      </ScrollView>
+      </View>
 
       <View
         style={{

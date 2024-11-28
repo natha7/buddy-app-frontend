@@ -6,16 +6,16 @@ export default function TabLayout() {
   return (
     <Tabs tabBar={(props) => <TabBar {...props} />}>
       <Tabs.Screen
-        name="index"
+        name="garden"
         options={{
-          title: "Identify Bud",
+          title: "My Garden",
           headerShown: false,
         }}
       />
       <Tabs.Screen
-        name="garden"
+        name="index"
         options={{
-          title: "My Garden",
+          title: "Identify Bud",
           headerShown: false,
         }}
       />

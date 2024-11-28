@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, ActivityIndicator } from "react-native";
+import { Text, View, ScrollView, Image, ActivityIndicator } from "react-native";
 import { useCustomFonts } from "../../../hooks/useCustomFonts";
 import { useEffect, useState } from "react";
 import { getPlantByPlantId, getUserGardenPlantByUserIdAndPlantId } from "../../utils/api";
@@ -12,7 +12,7 @@ export default function SingleGardenPlantById() {
   const { gardenPlantId } = route.params;
   const [gardenPlant, setGardenPlant] = useState({});
   const [generalInfo, setGeneralInfo] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const user = useUser();
 
   useEffect(() => {
@@ -71,69 +71,82 @@ export default function SingleGardenPlantById() {
               {gardenPlant?.nickname}'s Details
             </Text>
           </View>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              backgroundColor: "#78A55A33",
-              borderRadius: 20,
-              height: 120,
-              width: 330,
-              margin: "auto",
-              marginTop: 8,
-            }}>
-            <View
-              style={{
-                height: 75,
-                width: 75,
-                alignSelf: "center",
-                marginLeft: 16,
-                borderRadius: 10,
-                backgroundColor: "grey",
-              }}>
-              <Image
-                source={{ uri: generalInfo.default_image }}
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  alignSelf: "center",
-                  borderRadius: 10,
-                  borderColor: "#314C1C",
-                  borderWidth: 1,
-                }}
-              />
-            </View>
+          <ScrollView>
             <View
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-start",
-                marginVertical: 30,
-                flex: 1,
-                marginLeft: 12,
+                justifyContent: "space-between",
+                backgroundColor: "#78A55A33",
+                borderRadius: 20,
+                height: 200,
+                width: 330,
+                margin: "auto",
+                marginTop: 8,
               }}>
-              <Text
+              <View
                 style={{
-                  marginBottom: 5,
-                  fontSize: 14,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                Nickname: <Text style={{ fontWeight: "600" }}>{gardenPlant.nickname}</Text>
-              </Text>
-              <Text style={{ fontSize: 10 }}>
-                Thirst: <Text style={{ fontWeight: "600" }}>{/* Add thirst data here */}</Text>
-              </Text>
+                  height: 90,
+                  width: 90,
+                  alignSelf: "center",
+                  marginLeft: 16,
+                  borderRadius: 10,
+                  backgroundColor: "grey",
+                  marginTop: 10,
+                  marginBottom: 10,
+                }}>
+                <Image
+                  source={{ uri: generalInfo.default_image }}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    alignSelf: "center",
+                    borderRadius: 10,
+                    borderColor: "#314C1C",
+                    borderWidth: 1,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 10,
+                  flex: 1,
+                  marginLeft: 12,
+                }}>
+                <View style={{ paddingBottom: 10 }}>
+                  <Text
+                    style={{
+                      marginBottom: 5,
+                      fontSize: 14,
+                    }}
+                    ellipsizeMode="tail">
+                    Nickname: <Text style={{ fontWeight: "600" }}>{gardenPlant.nickname}</Text>
+                  </Text>
+                  <Text style={{ fontSize: 10 }}>Common name: {generalInfo.common_name}</Text>
+                  <Text style={{ fontSize: 10 }}>
+                    Indoor: {!generalInfo.extra_info.indoor ? "No" : "Yes"}
+                  </Text>
+                  <Text style={{ fontSize: 10 }}>
+                    Max height: {generalInfo.extra_info.max_height} feet
+                  </Text>
+                  <Text style={{ fontSize: 10 }}>Sunlight: {generalInfo.sunlight}</Text>
+                  <Text style={{ fontSize: 10 }}>
+                    Maintenance: {generalInfo.extra_info.maintenance}
+                  </Text>
+                </View>
+              </View>
             </View>
-          </View>
 
-          {Object.keys(gardenPlant).length > 0 && (
-            <View style={{ flex: 1 }}>
-              <JournalSection gardenPlant={gardenPlant} />
-            </View>
-          )}
+            {Object.keys(gardenPlant).length > 0 && (
+              <View style={{ flex: 1 }}>
+                <JournalSection gardenPlant={gardenPlant} />
+              </View>
+            )}
+          </ScrollView>
         </View>
       )}
     </View>
