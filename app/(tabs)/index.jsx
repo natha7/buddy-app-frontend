@@ -39,7 +39,6 @@ export default function Homepage() {
         const plantDetailsResult = await IdentifyPlant(base64Image, apiKey);
 
         setResults(plantDetailsResult);
-        console.log(plantDetailsResult, "<<<<line33 index plant detail");
       }
     } catch (error) {
       console.error("Error processing image:", error);

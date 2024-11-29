@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   SafeAreaView,
   KeyboardAvoidingView,
   TextInput,
@@ -53,18 +52,6 @@ const login = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#275c42", alignItems: "center" }}>
       <View style={{ marginTop: 100, marginBottom: 50 }}>
-        {/* <Image
-          source={{
-            uri: "https://png.pngtree.com/png-clipart/20231018/original/pngtree-3d-cute-plant-character-relax-png-image_13342871.png",
-          }}
-          style={{
-            flexDirection: "row",
-            width: 100,
-            height: 100,
-            alignSelf: "center",
-            borderRadius: 8,
-          }}
-        /> */}
         <Text
           style={{
             fontSize: 55,

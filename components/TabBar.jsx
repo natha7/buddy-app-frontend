@@ -3,14 +3,10 @@ import { useLinkBuilder } from "@react-navigation/native";
 import { Text, PlatformPressable } from "@react-navigation/elements";
 import { Ionicons } from "@expo/vector-icons";
 
-<Ionicons name="flower-sharp" size={24} color="black" />;
-<Ionicons name="camera-sharp" size={24} color="black" />;
-
 function TabBar({ state, descriptors, navigation }) {
   const { buildHref } = useLinkBuilder();
 
   const icons = {
-    // index: (props) => <Ionicons name="flower-sharp" size={28} color={props.color} />,
     index: (props) => <Ionicons name="camera-sharp" size={28} color={props.color} />,
     calendar: (props) => <Ionicons size={28} name="calendar" color={props.color} />,
     garden: (props) => <Ionicons size={28} name="leaf" color={props.color} />,
